@@ -1,6 +1,39 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
+// Get all bookings
+export async function getBookings({filterValue, splittedSortValue}) {
+
+let promenna123 = supabase
+    .from('bookings')
+    .select('*, cabins(name), guests(fullName, email)');
+
+// Apply filter if user selected one
+if (filterValue) {
+    promenna123 = promenna123.eq('status', filterValue);
+  }
+
+
+// Change sorting based on user selection
+if (splittedSortValue) {
+  promenna123 = promenna123.order(splittedSortValue.field, {ascending: splittedSortValue.direction === "asc"});
+}
+
+
+
+//Download data from Supabase
+const { data, error } = await promenna123;
+
+  if (error) {
+    console.error(error);
+    throw new Error("Bookings could not be loaded");
+  }
+
+  return data;
+}
+
+
+//Get a single booking by ID
 export async function getBooking(id) {
   const { data, error } = await supabase
     .from("bookings")

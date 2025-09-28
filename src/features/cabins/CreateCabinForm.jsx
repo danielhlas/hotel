@@ -50,7 +50,6 @@ const Error = styled.span`
 function CreateCabinForm({showForm, setShowForm}) {
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const queryClient = useQueryClient();
-  console.log("SHOW FORM" + showForm)
 
   const {mutate, isLoading} = useMutation({
 		mutationFn: newcabin => addCabin(newcabin),

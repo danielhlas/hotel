@@ -38,7 +38,6 @@ function UpdateUserDataForm() {
   }
 
   function handleCancel(e) {
-    // We don't even need preventDefault because this button was designed to reset the form (remember, it has the HTML attribute 'reset')
     setFullName(currentFullName);
     setAvatar(null);
   }

@@ -31,7 +31,7 @@ function AppLayout() {
       <Sidebar />
       <Main>
         <Div>
-        <Outlet />
+          <Outlet />
         </Div>
       </Main>
     </StyledAppLayout>

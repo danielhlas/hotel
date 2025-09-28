@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 import Button from "../ui/Button";
 import Modal from "../ui/Modal";
-import { getCabins } from "../services/apiCabins";
 import CabinTable from "../features/cabins/CabinTable";
 import CreateCabinForm from "../features/cabins/CreateCabinForm";
+import CabinsFilterSort from "../features/cabins/CabinsFilterSort";
 
 function Cabins() {
   const [showForm, setShowForm] = useState(false);
@@ -15,12 +15,14 @@ function Cabins() {
     <>
       <Row type="horizontal">
         <Heading as="h1" style={{marginBottom: "45px"}}>All cabins</Heading>
-        <p>Filter / Sort</p>
+        <CabinsFilterSort/>
       </Row>
 
       <Row>
         <CabinTable />
-        <Button onClick={()=>setShowForm((show)=>!show)}>Add Cabins </Button>
+        <div>
+          <Button onClick={()=>setShowForm((show)=>!show)}>Add Cabins</Button>
+        </div>
       </Row>
 
       {showForm && (

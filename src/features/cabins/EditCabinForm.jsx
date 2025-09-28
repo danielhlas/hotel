@@ -47,7 +47,7 @@ const Error = styled.span`
 `;
 
 
-function EditCabinForm({ cabinToEdit = {} }) { 
+function EditCabinForm({ cabinToEdit = {}, setShowEditForm }) { 
   const { register, handleSubmit, reset, formState } = useForm({defaultValues: cabinToEdit});
   const queryClient = useQueryClient();
   const oldImgUrl = cabinToEdit.image
@@ -72,7 +72,8 @@ function EditCabinForm({ cabinToEdit = {} }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(handleEditCabin, handleErrorFunkce)}>
+    <Form type="modal" onSubmit={handleSubmit(handleEditCabin, handleErrorFunkce)}>
+      
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
         <Input type="text" id="name" disabled={isLoading} {...register("name", {
@@ -130,7 +131,7 @@ function EditCabinForm({ cabinToEdit = {} }) {
       </FormRow>
 
       <FormRow>
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset"  onClick={()=>setShowEditForm?.(false)}>
           Cancel
         </Button>
         <Button>Edit cabin</Button>

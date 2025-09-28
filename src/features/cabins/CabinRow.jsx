@@ -1,6 +1,6 @@
+import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoDuplicateSharp } from "react-icons/io5";
 import { FaEdit } from "react-icons/fa";
@@ -9,17 +9,10 @@ import { MdDeleteForever } from "react-icons/md";
 import { formatCurrency } from "../../utils/helpers";
 import { addCabin, deleteCabin } from "../../services/apiCabins";
 import EditCabinForm from "./EditCabinForm";
-
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import Table from "../../ui/Table";
+import Menus from "../../ui/Menus";
 
 const Img = styled.img`
   display: block;
@@ -51,6 +44,7 @@ const Discount = styled.div`
 
 function CabinRow({cabin}) {
   const [showEditForm, setShowEditForm] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const queryClient = useQueryClient();
 	
@@ -65,8 +59,6 @@ function CabinRow({cabin}) {
 		},
 		onError: (err) => alert(err.message)
 	})
-
-
 
   //Duplikace řádku
   const {mutate: duplicateCabin, isLoading: isDuplicatingCabin} = useMutation({
@@ -88,22 +80,53 @@ function CabinRow({cabin}) {
 
   return (
     <>
-      <TableRow role="row">
+      <Table.Row>
         <Img src={cabin.image} alt={cabin.name}/>
         <Cabin>{cabin.name}</Cabin>
         <div>For {cabin.maxCapacity} guests</div>
+
         <Price>{formatCurrency(cabin.regularPrice)}</Price>
         {cabin.discount ? <Discount>{cabin.discount}% off</Discount> : "-"}
-        
-        <span>
-          <button onClick={() => duplicateCabin(cabin)}><IoDuplicateSharp /></button>
-          <button onClick={() => setShowEditForm((showForm) => !showForm)}><FaEdit /></button>
-          <button onClick={() => mutate(cabin)}><MdDeleteForever /></button>
+      
+        <span>      
+          {/* Toggle menu with actions buttons */}
+          <Menus.Menu>
+            <Menus.Toggle id={cabin.id}/>
+            <Menus.List id={cabin.id}>
+              <Menus.Button icon={<IoDuplicateSharp/>} onClick={()=>duplicateCabin(cabin)}>Duplicate</Menus.Button>
+              <Menus.Button icon={<FaEdit/>} onClick={() => setShowEditForm((showForm) => !showForm)}>Edit</Menus.Button>
+              <Menus.Button icon={<MdDeleteForever/>} onClick={() => setShowDeleteConfirmation((showDeleteConfirmation) => !showDeleteConfirmation)}>Delete</Menus.Button>
+            </Menus.List>
+          </Menus.Menu>
+
         </span>
-      </TableRow>
+      </Table.Row>
     
-      {showEditForm &&  <EditCabinForm cabinToEdit={cabin} /> }
-     
+
+
+      {showEditForm && (
+        <Modal setShowForm={setShowEditForm}>
+          <EditCabinForm cabinToEdit={cabin} setShowEditForm={setShowEditForm}/>
+        </Modal>
+      )}
+
+
+      {showDeleteConfirmation && (
+        <Modal setShowForm={setShowDeleteConfirmation}>
+          <ConfirmDelete
+            resource={cabin.name} // nebo jiný čitelný text
+            onConfirm={() => {
+              mutate(cabin);
+              setShowDeleteConfirmation(false);
+            }}
+            close={() => setShowDeleteConfirmation(false)} // předáváme funkci
+          />
+        </Modal>
+      )}
+
+
+
+
     </>
   )
 }

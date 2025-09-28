@@ -1,12 +1,12 @@
-import SortBy from 'ui/SortBy';
-import Filter from 'ui/Filter';
-import TableOperations from 'ui/TableOperations';
+import Sort from './Sort';
+import FilterBookings from './FilterBookings';
+import TableOperations from '../../ui/TableOperations';
 
 function BookingTableOperations() {
   return (
     <TableOperations>
-      {/* We could do these two as compound components as well, but let's keep it simple, and let's also explore different ways of achieving the same thing */}
-      <Filter
+
+      <FilterBookings
         filterField='status'
         options={[
           { value: 'all', label: 'All' },
@@ -16,7 +16,7 @@ function BookingTableOperations() {
         ]}
       />
 
-      <SortBy
+     <Sort
         options={[
           { value: 'startDate-desc', label: 'Sort by date (recent first)' },
           { value: 'startDate-asc', label: 'Sort by date (earlier first)' },
@@ -27,6 +27,7 @@ function BookingTableOperations() {
           { value: 'totalPrice-asc', label: 'Sort by amount (low first)' },
         ]}
       />
+   
     </TableOperations>
   );
 }
