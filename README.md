@@ -1,8 +1,15 @@
-# React + Vite
+# Hotel
+- Live: https://react-hotel-cz.netlify.app/
+- Data is stored on a server (Supabase)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Cabins
+- Add, duplicate, edit or remove cabins
+- Filter cabins
+- Sort cabins
 
-Currently, two official plugins are available:
+## Bookings
+- Filter cabins
+- Sort cabins
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Settings
+-Change limits of the bookings, cabins etc.
