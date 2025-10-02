@@ -12,4 +12,5 @@
 - Sort cabins
 
 ## Settings
--Change limits of the bookings, cabins etc.
+- Change limits of the bookings, cabins etc.
+

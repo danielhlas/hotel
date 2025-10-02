@@ -45,7 +45,9 @@ function Filter() {
       return
     }
 
+
     searchParams.set("status", value);
+    searchParams.set("page", 1);
     setSearchParams(searchParams);
 
     

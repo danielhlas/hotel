@@ -20,7 +20,7 @@ const StyledTable = styled.div`
 
 const CommonRow = styled.header`
   display: grid;
-  grid-template-columns: ${(props) => props.columns};
+  grid-template-columns: ${(props) => props.$columns};
   //props.columns is passed by user. Example: "0.6fr 1.8fr 2.2fr 1fr 1fr 1fr"
   column-gap: 2.4rem;
   align-items: center;
@@ -74,7 +74,7 @@ const TableContext = createContext();
 function Table({columns, children}) {
     return (
       <TableContext.Provider value={{ columns }}>
-        <StyledTable columns={columns} role="table">
+        <StyledTable  role="table">
           {children}  
         </StyledTable>
       </TableContext.Provider>
@@ -85,7 +85,7 @@ function Table({columns, children}) {
 function Header({children}){
   const {columns} = useContext(TableContext);
   return(
-    <StyledHeader columns={columns} as={"header"} role="row">
+    <StyledHeader $columns={columns} as={"header"} role="row">
       {children}
     </StyledHeader>
   )
@@ -94,7 +94,7 @@ function Header({children}){
 function Row({children}){
   const {columns} = useContext(TableContext);
   return(
-    <StyledRow columns={columns} role="row">
+    <StyledRow $columns={columns} role="row">
       {children}
     </StyledRow>
   )

@@ -1,12 +1,13 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
+import { ROWS_PER_PAGE } from "../utils/constants";
 
 // Get all bookings
-export async function getBookings({filterValue, splittedSortValue}) {
+export async function getBookings({filterValue, splittedSortValue, currentPage}) {
 
 let promenna123 = supabase
     .from('bookings')
-    .select('*, cabins(name), guests(fullName, email)');
+    .select('*, cabins(name), guests(fullName, email)', { count: 'exact' });
 
 // Apply filter if user selected one
 if (filterValue) {
@@ -20,16 +21,24 @@ if (splittedSortValue) {
 }
 
 
+// Download only selected rows:
+if (currentPage) {
+	const fromNumber = (currentPage-1) * ROWS_PER_PAGE ;
+	const toNumber = (fromNumber-1) + ROWS_PER_PAGE ;
+
+	promenna123 = promenna123.range(fromNumber, toNumber)
+}
+
 
 //Download data from Supabase
-const { data, error } = await promenna123;
+const { data, error, count } = await promenna123;
 
   if (error) {
     console.error(error);
     throw new Error("Bookings could not be loaded");
   }
 
-  return data;
+  return { data, count };
 }
 
 
