@@ -1,8 +1,10 @@
 import styled from 'styled-components';
-import { box } from 'styles/styles';
 
 const DashboardBox = styled.div`
-  ${box}
+/////
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto 34rem auto;
+  //////
   padding: 3.2rem;
 
   display: flex;

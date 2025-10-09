@@ -57,19 +57,21 @@ function MainNav() {
   return (
     <nav>
       <NavList>
-        
-      {/*<li>
+
+        <li>
            <StyledNavLink to="/dashboard">
             <HiOutlineHome />
             <span>Home</span>
           </StyledNavLink>
         </li>
-
+        
+      {/*
           <StyledNavLink to="/users">
             <HiOutlineUsers />
             <span>Users</span>
           </StyledNavLink>
-        </li> */}
+        </li> 
+      */}
 
        <li>
         <StyledNavLink to="/bookings">
