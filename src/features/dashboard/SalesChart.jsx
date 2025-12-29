@@ -45,8 +45,6 @@ function SalesChart({bookingsAfterDate = [], daysSelectedNumber = 7}) {
     };
 });
 
-  
-
 
   const colors = {
   totalSales: { stroke: "#4f46e5", fill: "#c7d2fe" },

@@ -45,6 +45,7 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
+
       <Toaster 
 			position="top-center" 
 			gutter={12} 
@@ -62,6 +63,7 @@ function App() {
 					color: "var(--color-grey-700)" 
 				}
 			}}/>
+      
     </QueryClientProvider>
   );
 }

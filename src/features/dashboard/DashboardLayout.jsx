@@ -19,12 +19,16 @@ function DashboardLayout({ staysAfterDate, bookingsAfterDate, daysSelectedNumber
       <br />
       <StyledDashboardLayout>
             
+        {/* Top 4 tiles */}
         <Stats 
           bookingsAfterDate={bookingsAfterDate} 
           staysAfterDate={staysAfterDate} 
           daysSelectedNumber={daysSelectedNumber}
           />
+
+        {/* Todays bookings */}  
         <TodayActivity/>
+        
         <DurationChart staysAfterDate={staysAfterDate} />
         <SalesChart bookingsAfterDate={bookingsAfterDate} daysSelectedNumber={daysSelectedNumber}/>
       </StyledDashboardLayout>

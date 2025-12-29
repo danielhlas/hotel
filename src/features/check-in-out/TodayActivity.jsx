@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import Row from "../../ui/Row"
 import Heading from "../../ui/Heading"
-import { useQuery } from '@tanstack/react-query';
-import { getStaysTodayActivity } from '../../services/apiBookings';
 import TodayItem from "./TodayItem"
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getStaysTodayActivity } from '../../services/apiBookings';
+import { uploadBookings } from '../../data/Uploader';
+import { useEffect } from 'react';
 
 const StyledToday = styled.div`
   background-color: var(--color-grey-0);
@@ -37,18 +39,28 @@ const NoActivity = styled.p`
 
 
 
-
-
 function TodayActivity() {
-
+  const queryClient = useQueryClient();
 
   //QUERY
-  const {isLoading, data, error} = useQuery({
+  const { isLoading, data, error } = useQuery({
     queryKey: ["TodayActivity"],
     queryFn: () => getStaysTodayActivity(),
   })
 
- if (isLoading) return
+  //if not enough data:
+  useEffect(function () {
+    if (!isLoading && data?.length < 2) {
+      uploadBookings().then(() => {
+        queryClient.invalidateQueries({ queryKey: ["TodayActivity"], refetchType: 'active' })
+      })
+      console.log("data less than 2, uploadBookings() done")
+    }
+  }, [data, isLoading])
+
+
+  if (isLoading) return
+
 
   return (
     <StyledToday>
@@ -56,16 +68,16 @@ function TodayActivity() {
         <Heading as="h2">Today</Heading>
       </Row>
 
-      { 
-      (data.length > 0) 
-      ? 
-      <TodayList>
-        {data.map(current => <TodayItem current={current} key={current.id}/>)}
-      </TodayList> 
-       : 
-      <NoActivity>No activity today</NoActivity> 
+      {
+        (data.length > 0)
+          ?
+          <TodayList>
+            {data.map(current => <TodayItem current={current} key={current.id} />)}
+          </TodayList>
+          :
+          <NoActivity>No activity today</NoActivity>
       }
-      
+
     </StyledToday>
   )
 }

@@ -1,36 +1,39 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 import { ROWS_PER_PAGE } from "../utils/constants";
+import { uploadBookings } from '../data/Uploader';
+import toast from "react-hot-toast";
+
 
 // Get all bookings
-export async function getBookings({filterValue, splittedSortValue, currentPage}) {
+export async function getBookings({ filterValue, splittedSortValue, currentPage }) {
 
-let promenna123 = supabase
+  let promenna123 = supabase
     .from('bookings')
     .select('*, cabins(name), guests(fullName, email)', { count: 'exact' });
 
-// Apply filter if user selected one
-if (filterValue) {
+  // Apply filter if user selected one
+  if (filterValue) {
     promenna123 = promenna123.eq('status', filterValue);
   }
 
 
-// Change sorting based on user selection
-if (splittedSortValue) {
-  promenna123 = promenna123.order(splittedSortValue.field, {ascending: splittedSortValue.direction === "asc"});
-}
+  // Change sorting based on user selection
+  if (splittedSortValue) {
+    promenna123 = promenna123.order(splittedSortValue.field, { ascending: splittedSortValue.direction === "asc" });
+  }
 
 
-// Download only selected rows:
-if (currentPage) {
-	const fromNumber = (currentPage-1) * ROWS_PER_PAGE ;
-	const toNumber = (fromNumber-1) + ROWS_PER_PAGE ;
+  // Download only selected rows:
+  if (currentPage) {
+    const fromNumber = (currentPage - 1) * ROWS_PER_PAGE;
+    const toNumber = (fromNumber - 1) + ROWS_PER_PAGE;
 
-	promenna123 = promenna123.range(fromNumber, toNumber)
-}
+    promenna123 = promenna123.range(fromNumber, toNumber)
+  }
 
-//Download data from Supabase
-const { data, error, count } = await promenna123;
+  //Download data from Supabase
+  const { data, error, count } = await promenna123;
 
   if (error) {
     console.error(error);
@@ -96,6 +99,8 @@ export async function getStaysAfterDate(date) {
   return confirmedStays;
 }
 
+
+
 // Activity means that there is a check in or a check out today
 export async function getStaysTodayActivity() {
   const { data, error } = await supabase
@@ -110,6 +115,7 @@ export async function getStaysTodayActivity() {
     console.error(error);
     throw new Error("Bookings could not get loaded");
   }
+
   return data;
 }
 

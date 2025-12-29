@@ -53,11 +53,6 @@ const Value = styled.p`
 `;
 
 
-///////////
-//pokud tato kompo funguje, můžu smazat Stat.jsx
-//////////////
-
-
 function Stats({ bookingsAfterDate, staysAfterDate, daysSelectedNumber }) {
 
     const {isLoading, data: cabins, error} = useQuery({

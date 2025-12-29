@@ -21,11 +21,11 @@ function CabinTable() {
 
 
   if(isLoading) return <Spinner/>
-
+  
   if(!cabins.length) {
     return <Empty resource="cabins" />
   }
-
+  
 
   //1. Filtering
   let filteredCabins;

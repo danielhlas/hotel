@@ -27,7 +27,7 @@ const Guest = styled.div`
 
 
 function TodayItem({ current }) {
-  console.log(current)
+  //console.log(current)
   return (
     <div>
       <StyledTodayItem>

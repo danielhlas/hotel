@@ -7,13 +7,7 @@ import { subtractDates } from "../utils/helpers";
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
-
-// const originalSettings = {
-//   minBookingLength: 3,
-//   maxBookingLength: 30,
-//   maxGuestsPerBooking: 10,
-//   breakfastPrice: 15,
-// };
+import toast from "react-hot-toast";
 
 async function deleteGuests() {
   const { error } = await supabase.from("guests").delete().gt("id", 0);
@@ -41,7 +35,7 @@ async function createCabins() {
 }
 
 async function createBookings() {
-  // Bookings need a guestId and a cabinId. We can't tell Supabase IDs for each object, it will calculate them on its own. So it might be different for different people, especially after multiple uploads. Therefore, we need to first get all guestIds and cabinIds, and then replace the original IDs in the booking data with the actual ones from the DB
+  //Bookings need a guestId and a cabinId. We can't tell Supabase IDs for each object, it will calculate them on its own. So it might be different for different people, especially after multiple uploads. Therefore, we need to first get all guestIds and cabinIds, and then replace the original IDs in the booking data with the actual ones from the DB
   const { data: guestsIds } = await supabase
     .from("guests")
     .select("id")
@@ -94,11 +88,18 @@ async function createBookings() {
     };
   });
 
-  console.log(finalBookings);
-
   const { error } = await supabase.from("bookings").insert(finalBookings);
   if (error) console.log(error.message);
 }
+
+
+export async function uploadBookings() {
+  await deleteBookings();
+  await createBookings();
+  toast.success('New bookings uploaded! Reload the page!')
+}
+
+
 
 function Uploader() {
   const [isLoading, setIsLoading] = useState(false);
@@ -116,14 +117,21 @@ function Uploader() {
     await createBookings();
 
     setIsLoading(false);
+    toast.success('New bookings uploaded!')
   }
 
+  /*
   async function uploadBookings() {
-    setIsLoading(true);
-    await deleteBookings();
-    await createBookings();
-    setIsLoading(false);
-  }
+      setIsLoading(true);
+  
+      await deleteBookings();
+      await createBookings();
+  
+      setIsLoading(false);
+      toast.success('New bookings/cabins uploaded!')
+    }
+  */
+
 
   return (
     <div
@@ -143,6 +151,7 @@ function Uploader() {
       <Button onClick={uploadAll} disabled={isLoading}>
         Upload ALL
       </Button>
+
 
       <Button onClick={uploadBookings} disabled={isLoading}>
         Upload bookings ONLY

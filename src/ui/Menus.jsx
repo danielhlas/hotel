@@ -1,6 +1,4 @@
-import { set } from "date-fns";
 import { createContext, useContext, useState } from "react";
-import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
 import { useCloseModalOnClickOutside } from "../hooks/useCloseModalOnClickOutside";
@@ -69,6 +67,7 @@ const StyledButton = styled.button`
 
 const MenusContext = createContext()
 
+
 //Compound Component
 function Menus({ children }) {
   const [selectedMenuId, setSelectedMenuId] = useState(""); //tracks which menu is selected/opened
@@ -76,11 +75,14 @@ function Menus({ children }) {
 
   return (
     <MenusContext.Provider value={{selectedMenuId, setSelectedMenuId, positionOfMenu, setPositionOfMenu}}>
-      {/* passes variables/funcitons to children compp (Toggle, List, Button)*/}
-      {children}
+      {
+      children
+      /* passes variables/functions to children comp (Toggle, List, Button)*/
+      }
     </MenusContext.Provider>
   )
 }
+
 
 function Toggle({ id }) {
   const {selectedMenuId, setSelectedMenuId, setPositionOfMenu} = useContext(MenusContext)
@@ -109,7 +111,7 @@ function Toggle({ id }) {
 }
 
 
-function List({ id, children }) { //its list of Buttons
+function List({ id, children }) { // list of Buttons
   const {selectedMenuId, positionOfMenu, setSelectedMenuId} = useContext(MenusContext)
 
   //custom hook to close menu on click outside
