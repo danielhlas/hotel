@@ -1,12 +1,13 @@
+import type { ReactElement } from "react";
 import styled, { css } from "styled-components";
 
-const StyledFormRow = styled.div`
+const StyledFormRow = styled.div<{$orientation?: string}>`
   display: grid;
   align-items: center;
 
   grid-template-columns: ${(props) =>
-    props.orientation === "vertical" ? "1fr" : "24rem 1fr 1.2fr"};
-  gap: ${(props) => (props.orientation === "vertical" ? "0.8rem" : "2.4rem")};
+    props.$orientation === "vertical" ? "1fr" : "24rem 1fr 1.2fr"};
+  gap: ${(props) => (props.$orientation === "vertical" ? "0.8rem" : "2.4rem")};
 
   padding: 1.2rem 0;
 
@@ -20,14 +21,14 @@ const StyledFormRow = styled.div`
 
   &:not(:last-child) {
     border-bottom: ${(props) =>
-      props.orientation === "vertical"
+      props.$orientation === "vertical"
         ? "none"
         : "1px solid var(--color-grey-100)"};
   }
 
   /* Special treatment if the row contains buttons, and if it's NOT a vertical row */
   ${(props) =>
-    props.orientation !== "vertical" &&
+    props.$orientation !== "vertical" &&
     css`
       &:has(button) {
         display: flex;
@@ -46,9 +47,16 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function FormRow({ label, error, children, orientation }) {
+type FormRowProps = {
+  label: string;
+  error?: string;
+  children: ReactElement;
+  orientation?: string;
+}
+
+function FormRow({ label, error, children, orientation = "horizontal" }: FormRowProps) {
   return (
-    <StyledFormRow orientation={orientation}>
+    <StyledFormRow $orientation={orientation}>
       {label && <Label htmlFor={children.props.id}>{label}</Label>}
       {children}
       {error && <Error>{error}</Error>}

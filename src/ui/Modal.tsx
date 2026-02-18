@@ -1,3 +1,4 @@
+import {type ReactNode } from 'react';
 import { IoCloseSharp } from "react-icons/io5";
 import styled from "styled-components";
 import { useCloseModalOnClickOutside } from "../hooks/useCloseModalOnClickOutside";
@@ -51,13 +52,19 @@ const Button = styled.button`
   }
 `;
 
-function Modal({children, setShowForm}) {
 
-  const { modalElement } = useCloseModalOnClickOutside(setShowForm);
+type ModalProps = {
+  children: ReactNode;
+  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+}
+function Modal({children, setShowForm}: ModalProps) {
+
+
+  const { modalElementRef } = useCloseModalOnClickOutside(setShowForm);
 
   return (
       <Overlay>
-        <StyledModal ref={modalElement}>
+        <StyledModal ref={modalElementRef}>
           <Button onClick={() => setShowForm((show)=>!show)}>
             <IoCloseSharp />  {/*IoCloseSharp is just icon*/}
            </Button>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledSelect = styled.select`
+const StyledSelect = styled.select<{ type?: "white" }>`
   font-size: 1.4rem;
   padding: 0.8rem 1.2rem;
   border: 1px solid
@@ -14,9 +14,20 @@ const StyledSelect = styled.select`
   box-shadow: var(--shadow-sm);
 `;
 
-function Select({options, value, onChange, ...props}) {
+
+type SelectType = {
+  options:  {
+    value: string;
+    label: string;
+  }[];
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLSelectElement>; //fce
+  type?: "white";
+}
+
+function Select({options, value, onChange, ...style}: SelectType) {
   return (
-    <StyledSelect value={value} onChange={onChange} {...props}>
+    <StyledSelect value={value} onChange={onChange} {...style}>
       {options.map(option => (<option value={option.value} key={option.value}> {option.label} </option>))}
     </StyledSelect>
   )

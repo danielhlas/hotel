@@ -28,7 +28,8 @@ function Dashboard() {
 
   //if not enough data, upload new bookings to database and refetch:
   useEffect(function () {
-    if (!isLoadingStayes && staysAfterDate?.length < 2) {
+    if (isLoadingStayes || !staysAfterDate) return;
+    if (staysAfterDate?.length < 2) {
       uploadBookings().then(() => {
         queryClient.invalidateQueries({ queryKey: ["StaysAfterDate", daysSelectedNumber], refetchType: 'active' })
         queryClient.invalidateQueries({ queryKey: ["BookingsAfterDate", daysSelectedNumber], refetchType: 'active' })
@@ -51,7 +52,7 @@ function Dashboard() {
 
   return (
     <>
-      <Row type="horizontal">
+      <Row $type="horizontal">
         <Heading as="h1">Dashboard</Heading>
         <FilterDashboard />
       </Row>

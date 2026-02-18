@@ -7,7 +7,6 @@ import Pagination from '../../ui/Pagination';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from 'react-router-dom';
-import { ROWS_PER_PAGE } from "../../utils/constants"
 
 function BookingTable() {
 
@@ -36,7 +35,9 @@ function BookingTable() {
 
 //PRE-FETCHING
 const queryClient = useQueryClient();
-const numOfPages = Math.ceil(count/10);
+if (typeof count !== "number") return
+  const numOfPages = Math.ceil(count/10);
+
 
 if(currentPage < numOfPages){
   queryClient.prefetchQuery({
@@ -54,41 +55,37 @@ if(currentPage > 1){
 }
 
 
+if(isLoading) return <Spinner/>
+
+if (!bookings?.length) {
+  return <Empty resource="bookings" />
+}
 
 
-
-  if(isLoading) return <Spinner/>
-
-  if (!bookings.length) {
-    return <Empty resource="bookings" />
-  }
-
-
-
-  return (
-    <Menus>
-      <Table columns='0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem'>
-        <Table.Header>
-          <div>Cabin</div>
-          <div>Guest</div>
-          <div>Dates</div>
-          <div>Status</div>
-          <div>Amount</div>
-          <div></div>
-        </Table.Header>
+return (
+  <Menus>
+    <Table columns='0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem'>
+      <Table.Header>
+        <div>Cabin</div>
+        <div>Guest</div>
+        <div>Dates</div>
+        <div>Status</div>
+        <div>Amount</div>
+        <div></div>
+      </Table.Header>
 
 
-        {bookings.map((booking) => (
-            <BookingRow key={booking.id} booking={booking} />
-        ))} 
+      {bookings.map((booking) => (
+          <BookingRow key={booking.id} booking={booking} />
+      ))} 
 
-          
-          <Table.Footer>
-            <Pagination numberOfRows={count} numOfPages={numOfPages} />
-          </Table.Footer>
-      </Table>
-    </Menus>
-  );
+        
+        <Table.Footer>
+          <Pagination numberOfRows={count} numOfPages={numOfPages} />
+        </Table.Footer>
+    </Table>
+  </Menus>
+);
 }
 
 export default BookingTable;

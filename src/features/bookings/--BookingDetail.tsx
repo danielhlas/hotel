@@ -1,22 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Spinner from 'ui/Spinner';
 import BookingDataBox from './BookingDataBox';
-import Row from 'ui/Row';
-import Heading from 'ui/Heading';
-import Tag from 'ui/Tag';
-import ButtonGroup from 'ui/ButtonGroup';
-import Button from 'ui/Button';
-import Modal from 'ui/Modal';
-import ConfirmDelete from 'ui/ConfirmDelete';
+import Row from '../../ui/Row';
+import Heading from '../../ui/Heading';
+import Tag from '../../ui/Tag';
+import ButtonGroup from '../../ui/ButtonGroup';
+import Button from '../../ui/Button';
+import Modal from '../../ui/Modal';
+import ConfirmDelete from '../../ui/ConfirmDelete';
 
-import { useBooking } from 'features/bookings/useBooking';
+import { useBooking } from './useBooking';
 import { useDeleteBooking } from './useDeleteBooking';
-import { useMoveBack } from 'hooks/useMoveBack';
-import { useCheckout } from 'features/check-in-out/useCheckout';
-import ButtonText from 'ui/ButtonText';
-import Empty from 'ui/Empty';
+import { useMoveBack } from '../../hooks/useMoveBack';
+import { useCheckout } from '../check-in-out/useCheckout';
+import ButtonText from '../../ui/ButtonText';
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -43,13 +41,13 @@ function BookingDetail() {
 
   const { id: bookingId, status } = booking;
 
-  // We return a fragment so that these elements fit into the page's layout
+  // We return fragment so that these elements fit into the page's layout
   return (
     <>
-      <Row type='horizontal'>
+      <Row $type='horizontal'>
         <HeadingGroup>
-          <Heading type='h1'>Booking #{bookingId}</Heading>
-          <Tag type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
+          <Heading as='h1'>Booking #{bookingId}</Heading>
+          <Tag $type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
@@ -71,7 +69,7 @@ function BookingDetail() {
 
         <Modal>
           <Modal.Toggle opens='delete'>
-            <Button variation='danger'>Delete booking</Button>
+            <Button $variation='danger'>Delete booking</Button>
           </Modal.Toggle>
           <Modal.Window name='delete'>
             <ConfirmDelete
@@ -83,7 +81,7 @@ function BookingDetail() {
           </Modal.Window>
         </Modal>
 
-        <Button variation='secondary' onClick={moveBack}>
+        <Button $variation='secondary' onClick={moveBack}>
           Back
         </Button>
       </ButtonGroup>

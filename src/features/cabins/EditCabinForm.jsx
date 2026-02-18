@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -47,13 +49,17 @@ const Error = styled.span`
 `;
 
 
+
 function EditCabinForm({ cabinToEdit = {}, setShowEditForm }) { 
   const { register, handleSubmit, reset, formState } = useForm({defaultValues: cabinToEdit});
   const queryClient = useQueryClient();
   const oldImgUrl = cabinToEdit.image
 
   const {mutate, isLoading} = useMutation({
-		mutationFn: (cabinToEdit) => editCabin(cabinToEdit, oldImgUrl),
+		mutationFn: (payload) => {
+			const { newImage, ...cabin } = payload;
+			return editCabin(cabin, oldImgUrl, newImage);
+		},
 		onSuccess: () => {
       reset();	
 			queryClient.invalidateQueries({queryKey: ["cabins"]});
@@ -63,8 +69,11 @@ function EditCabinForm({ cabinToEdit = {}, setShowEditForm }) {
 	
 
   function handleEditCabin(data){
-    const imageResult = typeof data.image === "string" ? data.image : data.image[0];
-     mutate({...data, image: imageResult, id: data.id});
+    const isNewFile = typeof data.image !== "string" && data.image?.length > 0;
+    const imageResult = isNewFile ? data.image[0] : oldImgUrl;
+
+    const newImage = typeof imageResult !== "string" ? imageResult : undefined;
+     mutate({...data, image: imageResult, id: data.id, newImage});
   }
 
   function handleErrorFunkce(){
@@ -126,12 +135,12 @@ function EditCabinForm({ cabinToEdit = {}, setShowEditForm }) {
       </FormRow>
 
       <FormRow>
-        <Label htmlFor="image">Change photo (optinal):</Label>
+        <Label htmlFor="image">Change photo (optional):</Label>
         <FileInput id="image" accept="image/*" type="file" {...register("image")} />
       </FormRow>
 
       <FormRow>
-        <Button variation="secondary" type="reset"  onClick={()=>setShowEditForm?.(false)}>
+        <Button $variation="secondary" type="reset"  onClick={()=>setShowEditForm?.(false)}>
           Cancel
         </Button>
         <Button>Edit cabin</Button>

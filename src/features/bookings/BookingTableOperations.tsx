@@ -7,6 +7,7 @@ function BookingTableOperations() {
     <TableOperations>
 
       <FilterBookings
+      /* komponenta FilterBookings ty propy nepřijímá ani nepoužívá -> zkusit smazat */
         filterField='status'
         options={[
           { value: 'all', label: 'All' },

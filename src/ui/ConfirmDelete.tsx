@@ -20,25 +20,33 @@ const StyledConfirmDelete = styled.div`
   }
 `;
 
-function ConfirmDelete({ resource, onConfirm, close }) {
+type ConfirmDeleteProps = {
+  resource: string;
+  onConfirm: () => void ;
+  close?: () => void;
+}
+
+
+function ConfirmDelete({ resource, onConfirm, close }: ConfirmDeleteProps) {
+  
   function handleConfirmClick() {
     onConfirm();
   }
 
   return (
     <StyledConfirmDelete>
-      <Heading type="h3">Delete {resource}</Heading>
+      <Heading as="h3">Delete {resource}</Heading>
       <p>
         Are you sure you want to delete this {resource} permanently? This action
         cannot be undone.
       </p>
 
       <div>
-        <Button variation="secondary" onClick={close}>
+        <Button $variation="secondary" onClick={() => close?.()}>
           Cancel
         </Button>
         <Button
-          variation="danger"
+          $variation="danger"
           onClick={handleConfirmClick}
         >
           Delete

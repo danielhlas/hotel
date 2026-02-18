@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import type { ReactNode } from 'react';
+
 
 const StyledCheckbox = styled.div`
   display: flex;
@@ -25,14 +27,22 @@ const StyledCheckbox = styled.div`
   }
 `;
 
-function Checkbox({ checked, onChange, disabled = false, id, children }) {
+type CheckboxProps = {
+  checked: boolean;
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
+  disabled: boolean;
+  id: string;
+  children: ReactNode;
+}
+
+function Checkbox({ checked, onChange, disabled = false, id, children }: CheckboxProps) {
   return (
     <StyledCheckbox>
       <input
         type="checkbox"
         id={id}
         checked={checked}
-        onChange={onChange}
+        onChange={(e)=> console.log(e)}
         disabled={disabled}
       />
       <label htmlFor={!disabled ? id : ""}>{children}</label>

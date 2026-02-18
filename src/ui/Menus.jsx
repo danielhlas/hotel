@@ -1,3 +1,4 @@
+// @ts-nocheck - soubor ponechán v JSX, TypeScript nekontroluje
 import { createContext, useContext, useState } from "react";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
@@ -115,13 +116,13 @@ function List({ id, children }) { // list of Buttons
   const {selectedMenuId, positionOfMenu, setSelectedMenuId} = useContext(MenusContext)
 
   //custom hook to close menu on click outside
-  const  { modalElement }  = useCloseModalOnClickOutside(() => setSelectedMenuId("")) 
+  const  { modalElementRef }  = useCloseModalOnClickOutside(() => setSelectedMenuId("")) 
 
   //if this menu is not selected, dont render anything
   if (id !== selectedMenuId) return null; 
 
   return( 
-  <StyledList position={positionOfMenu} ref={modalElement}>
+  <StyledList position={positionOfMenu} ref={modalElementRef}>
        { children } {/*/ children are mulptiple Button components */}
     </StyledList>
 )}

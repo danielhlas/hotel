@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -7,7 +9,7 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { addCabin } from "../../services/apiCabins";
+import { addCabin, type cabinType } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 
 const FormRow = styled.div`
@@ -47,12 +49,16 @@ const Error = styled.span`
 `;
 
 
-function CreateCabinForm({showForm, setShowForm}) {
+type CreateCabinFormProps = {
+  showForm?: boolean;
+  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
+}
+function CreateCabinForm({showForm, setShowForm}: CreateCabinFormProps) {
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const queryClient = useQueryClient();
 
   const {mutate, isLoading} = useMutation({
-		mutationFn: newcabin => addCabin(newcabin),
+		mutationFn: (newcabin: cabinType) => addCabin(newcabin),
 		onSuccess: () => {
 			toast.success("New cabin successfully added")
 			queryClient.invalidateQueries({queryKey: ["cabins"]});
@@ -136,7 +142,7 @@ function CreateCabinForm({showForm, setShowForm}) {
 
 
       <FormRow>
-        <Button variation="secondary" type="reset" onClick={()=>setShowForm?.(false)} >
+        <Button $variation="secondary" type="reset" onClick={()=>setShowForm?.(false)} >
           Cancel
         </Button>
         <Button>Add new cabin</Button>

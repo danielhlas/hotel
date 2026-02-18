@@ -7,6 +7,7 @@ function CabinTableOperations() {
     <TableOperations>
 
       <Filter
+        /* komponenta Filter ty propy nepřijímá ani nepoužívá -> zkusit smazat */
         filterField='discount'
         options={[
           { value: 'all', label: 'All' },

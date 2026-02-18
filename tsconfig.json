@@ -1,0 +1,26 @@
+{
+"compilerOptions": {
+"strict": true,
+"allowJs": true,
+
+//Vite typical options
+"target": "ESNext", //dictate what syntax is supported
+"moduleResolution": "bundler",
+
+//Configuration, because Vite require TS to be isolated modules
+"moduleDetection": "force",
+"verbatimModuleSyntax": true,
+"useDefineForClassFields": true,
+"allowImportingTsExtensions": true,
+
+"jsx": "react-jsx",
+"lib": ["ESNext", "DOM"], //dictate which typings are included. Since this is a browser-based app, dom needs to be included and esnext is recommended for supporting the latest ECMAscript features.
+"skipLibCheck": true, // ignores type errors if they come from your npm packages, which limits errors to "just your code."
+"noEmit": true //ensures no actual TS code is output when running the compiler
+
+ }
+}
+
+
+
+

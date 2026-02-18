@@ -16,11 +16,11 @@ function UpdateSettingsForm() {
 
 
     //Update data from Supabase
-    const {isLoading: isUpdating, editSettings} = useEditSettings();
+    const {isEditing: isUpdating, editSettings} = useEditSettings();
 
     //Reusable function to update input values:
-    function handleUpdateInput(e, inputName){
- 
+    function handleUpdateInput(e: React.FocusEvent<HTMLInputElement>, inputName: string) {
+    if (!e.target) return
     if(e.target.value) {
       editSettings({[inputName]: e.target.value})
     }

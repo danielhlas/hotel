@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useState } from "react";
@@ -98,8 +100,8 @@ function CabinRow({cabin}) {
               <Menus.Button icon={<MdDeleteForever/>} onClick={() => setShowDeleteConfirmation((showDeleteConfirmation) => !showDeleteConfirmation)}>Delete</Menus.Button>
             </Menus.List>
           </Menus.Menu>
-
         </span>
+        
       </Table.Row>
     
 
@@ -123,8 +125,6 @@ function CabinRow({cabin}) {
           />
         </Modal>
       )}
-
-
 
 
     </>

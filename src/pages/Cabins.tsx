@@ -13,7 +13,7 @@ function Cabins() {
 
   return (
     <>
-      <Row type="horizontal">
+      <Row $type="horizontal">
         <Heading as="h1" style={{marginBottom: "45px"}}>All cabins</Heading>
         <CabinsFilterSort/>
       </Row>

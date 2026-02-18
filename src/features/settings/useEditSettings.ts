@@ -13,7 +13,7 @@ export function useEditSettings() {
         toast.success("Setting successfully edited");
         queryClient.invalidateQueries({ queryKey: ["settings"] });
       },
-      onError: (err) => toast.error(err.message),
+      onError: (err: Error) => toast.error(err.message),
     });
   
     return { isEditing, editSettings };
