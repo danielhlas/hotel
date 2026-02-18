@@ -19,11 +19,11 @@ function UpdateSettingsForm() {
     const {isEditing: isUpdating, editSettings} = useEditSettings();
 
     //Reusable function to update input values:
-    function handleUpdateInput(e: React.FocusEvent<HTMLInputElement>, inputName: string) {
-    if (!e.target) return
-    if(e.target.value) {
-      editSettings({[inputName]: e.target.value})
-    }
+    function handleUpdateInput(e, inputName) {
+      if (!e.target) return
+      if(e.target.value) {
+        editSettings({[inputName]: e.target.value})
+      }
     }
 
   return (

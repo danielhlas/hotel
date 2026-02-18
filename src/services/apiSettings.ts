@@ -10,9 +10,14 @@ export async function getSettings() {
   return data;
 }
 
-
+type updateSettingProps = {
+  minBookingLength: number;
+  maxBookingLength: number;
+  maxGuestsPerBooking: number;
+  breakfastPrice: number;
+}
 // We expect a newSetting object that looks like {setting: newValue}
-export async function updateSetting(newSetting) {
+export async function updateSetting(newSetting: updateSettingProps) {
   const { data, error } = await supabase
     .from("settings")
     .update(newSetting)
