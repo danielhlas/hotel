@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 export function useCloseModalOnClickOutside(setShowForm: React.Dispatch<React.SetStateAction<boolean>>) {
     
   //ref contains opened modal window(DOM element)
-  const modalElementRef = useRef<HTMLDivElement>(null);
+  const modalElementRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(function(){
     function handleClick(e: MouseEvent){

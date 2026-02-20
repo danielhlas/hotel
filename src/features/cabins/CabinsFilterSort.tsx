@@ -6,8 +6,6 @@ function CabinsFilterSort(){
 
     return <TableOperations>    
         <Filter/>
-
-
         <Sort options={
         [
             {value: "name-asc", label: "Name A-Z"},

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,7 +7,7 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { addCabin, type cabinType } from "../../services/apiCabins";
+import { addCabin, type AddCabinInputType  } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 
 const FormRow = styled.div`
@@ -49,28 +47,41 @@ const Error = styled.span`
 `;
 
 
+
 type CreateCabinFormProps = {
-  showForm?: boolean;
+  showForm: boolean;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 function CreateCabinForm({showForm, setShowForm}: CreateCabinFormProps) {
-  const { register, handleSubmit, reset, getValues, formState } = useForm();
+
+  type Inputs = {
+    name: string;
+    maxCapacity: number;
+    regularPrice: number;
+    discount: number;
+    description: string;
+    image: FileList;
+  }
+  const { register, handleSubmit, reset, formState, getValues } = useForm<Inputs>();
   const queryClient = useQueryClient();
 
   const {mutate, isLoading} = useMutation({
-		mutationFn: (newcabin: cabinType) => addCabin(newcabin),
+		mutationFn: (newcabin: AddCabinInputType) => addCabin(newcabin),
 		onSuccess: () => {
 			toast.success("New cabin successfully added")
 			queryClient.invalidateQueries({queryKey: ["cabins"]});
 			reset();	
 		},
-		onError: (err) => toast.error(err),
+		onError: (errors) => {
+      toast.error("An unknown error occurred.")
+      console.log(errors);
+    }
 	})
 	
 
-  function handleAddCabin(data){
+  function handleAddCabin(data: Inputs){
     mutate({...data, image: data.image[0]});
-    
     setShowForm?.(false);
   }
 
@@ -91,10 +102,13 @@ function CreateCabinForm({showForm, setShowForm}: CreateCabinFormProps) {
       <FormRow>
         <Label htmlFor="maxCapacity">Maximum capacity</Label>
         <Input type="number" id="maxCapacity" {...register("maxCapacity", {
-          required: "Vyplňte pole",
-          message: "Hodnota musí být vyšší než 0",
-          validate: (value) => value < 9 || "Žádný pokoj nemá kapacitu větší než 8"
-        })}/>
+              required: "Vyplňte pole",
+              valueAsNumber: true,
+              min: { value: 1, message: "Hodnota musí být vyšší než 0" },
+              max: { value: 8, message: "Žádný pokoj nemá kapacitu větší než 8" },
+            })}
+          />
+
         {formState.errors?.maxCapacity?.message && formState.errors.maxCapacity.message }
       </FormRow>
 
@@ -102,6 +116,7 @@ function CreateCabinForm({showForm, setShowForm}: CreateCabinFormProps) {
         <Label htmlFor="regularPrice">Regular price</Label>
         <Input type="number" id="regularPrice" {...register("regularPrice", {
           required: "Vyplňte pole",
+          valueAsNumber: true,
           min: { 
             value: 1,
             message: "Hodnota musí být vyšší než 0",
@@ -114,18 +129,26 @@ function CreateCabinForm({showForm, setShowForm}: CreateCabinFormProps) {
         <Label htmlFor="discount">Discount</Label>
         <Input type="number" id="discount" defaultValue={0} {...register("discount", {
           required: "Vyplňte pole",
+          valueAsNumber: true,
+          min: { 
+            value: 0,
+            message: "Sleva nemůže být menší než 1 %",
+          },
           max: { 
             value: 100,
             message: "Sleva nemůže být vyšší než 100 %",
+          },
+          validate: function (value) {
+            return value <= getValues("regularPrice") || "...";
           }
-
+          
         })} />
         {formState.errors?.discount?.message && formState.errors.discount.message }
       </FormRow>
 
       <FormRow>
         <Label htmlFor="description">Description for website</Label>
-        <Textarea type="number" id="description" defaultValue="" {...register("description", {
+        <Textarea id="description" defaultValue="" {...register("description", {
           required: "Vyplňte pole",
         })}/>
        {formState.errors?.description?.message && formState.errors.description.message }
@@ -145,7 +168,7 @@ function CreateCabinForm({showForm, setShowForm}: CreateCabinFormProps) {
         <Button $variation="secondary" type="reset" onClick={()=>setShowForm?.(false)} >
           Cancel
         </Button>
-        <Button>Add new cabin</Button>
+        <Button>Create new cabin</Button>
       </FormRow>
     </Form>
   );

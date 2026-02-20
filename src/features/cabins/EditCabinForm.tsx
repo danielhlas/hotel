@@ -1,7 +1,5 @@
-// @ts-nocheck
-
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler, type SubmitErrorHandler } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -10,7 +8,7 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { editCabin } from "../../services/apiCabins";
+import { editCabin, type AddCabinInputType, type CabinType} from "../../services/apiCabins";
 
 const FormRow = styled.div`
   display: grid;
@@ -49,36 +47,76 @@ const Error = styled.span`
 `;
 
 
+export type EditCabinInputType = Omit<AddCabinInputType, "id"> & {
+  id: number;
+};
 
-function EditCabinForm({ cabinToEdit = {}, setShowEditForm }) { 
-  const { register, handleSubmit, reset, formState } = useForm({defaultValues: cabinToEdit});
+
+type EditCabinFormProps = {
+  cabinToEdit: EditCabinInputType;
+  setShowEditForm: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function EditCabinForm({ cabinToEdit, setShowEditForm }: EditCabinFormProps) { 
+
+  type FormInputsType = {
+    name: string;
+    maxCapacity: number;
+    regularPrice: number;
+    discount: number;
+    description: string;
+    image: FileList;
+  }
+
+  const { register, handleSubmit, reset, formState } = useForm<FormInputsType>({
+    defaultValues: {
+      name: cabinToEdit.name,
+      maxCapacity: cabinToEdit.maxCapacity,
+      regularPrice: cabinToEdit.regularPrice,
+      discount: cabinToEdit.discount,
+      description: cabinToEdit.description,
+    },
+  });
+  
   const queryClient = useQueryClient();
-  const oldImgUrl = cabinToEdit.image
+  const oldImgUrl = cabinToEdit.image as string;
+
+
+  type EditCabinPayload = {
+    cabin: CabinType;
+    image: string | File;
+    id: number;
+  };
 
   const {mutate, isLoading} = useMutation({
-		mutationFn: (payload) => {
-			const { newImage, ...cabin } = payload;
-			return editCabin(cabin, oldImgUrl, newImage);
+		mutationFn: (payload : EditCabinPayload) => {
+			return editCabin({ ...payload.cabin, id: payload.id }, oldImgUrl, payload.image);
+      //editCabin(newCabin: CabinType, oldImgUrl: string, image: string | File)
+
 		},
 		onSuccess: () => {
       reset();	
 			queryClient.invalidateQueries({queryKey: ["cabins"]});
+      toast.success("The cabin was edited.")
 		},
-		onError: (err) => toast.error(err),
+		onError: () => toast.error("An unknown error occurred."),
 	})
 	
 
-  function handleEditCabin(data){
-    const isNewFile = typeof data.image !== "string" && data.image?.length > 0;
-    const imageResult = isNewFile ? data.image[0] : oldImgUrl;
-
-    const newImage = typeof imageResult !== "string" ? imageResult : undefined;
-     mutate({...data, image: imageResult, id: data.id, newImage});
+  const handleEditCabin: SubmitHandler<FormInputsType> = (data) => {
+    const newImageUploaded = typeof data.image !== "string" && data.image?.length > 0;
+    const imageResult = newImageUploaded ? data.image[0] : oldImgUrl;
+    mutate({
+      cabin: { ...data, image: imageResult } as CabinType,
+      image: imageResult,
+      id: cabinToEdit.id,
+    });
   }
 
-  function handleErrorFunkce(){
-    toast.error("Opravte příslušná pole");
-  }
+    //Error při odeslání form:
+    const handleErrorFunkce: SubmitErrorHandler<FormInputsType> = (errors) => { toast.error("An unknown error occurred.")
+    console.log(errors);
+    }
 
   return (
     <Form type="modal" onSubmit={handleSubmit(handleEditCabin, handleErrorFunkce)}>
@@ -95,7 +133,7 @@ function EditCabinForm({ cabinToEdit = {}, setShowEditForm }) {
         <Label htmlFor="maxCapacity">Maximum capacity</Label>
         <Input type="number" id="maxCapacity" disabled={isLoading} {...register("maxCapacity", {
           required: "Vyplňte pole",
-          message: "Hodnota musí být vyšší než 0",
+          min: { value: 1, message: "Hodnota musí být vyšší než 0" },
           validate: (value) => value < 9 || "Žádný pokoj nemá kapacitu větší než 8"
         })}/>
         {formState.errors?.maxCapacity?.message && formState.errors.maxCapacity.message }
@@ -115,7 +153,7 @@ function EditCabinForm({ cabinToEdit = {}, setShowEditForm }) {
 
       <FormRow>
         <Label htmlFor="discount">Discount</Label>
-        <Input type="number" id="discount" disabled={isLoading} defaultValue={0} {...register("discount", {
+        <Input type="number" id="discount" disabled={isLoading} {...register("discount", {
           required: "Vyplňte pole",
           max: { 
             value: 100,
@@ -128,7 +166,7 @@ function EditCabinForm({ cabinToEdit = {}, setShowEditForm }) {
 
       <FormRow>
         <Label htmlFor="description">Description for website</Label>
-        <Textarea type="number" id="description" disabled={isLoading} defaultValue="" {...register("description", {
+        <Textarea id="description" disabled={isLoading} {...register("description", {
           required: "Vyplňte pole",
         })}/>
        {formState.errors?.description?.message && formState.errors.description.message }

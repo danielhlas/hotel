@@ -1,5 +1,6 @@
-// @ts-nocheck - soubor ponechán v JSX, TypeScript nekontroluje
 import { createContext, useContext, useState } from "react";
+import type { ReactNode } from 'react';
+
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
 import { useCloseModalOnClickOutside } from "../hooks/useCloseModalOnClickOutside";
@@ -30,7 +31,13 @@ const StyledToggle = styled.button`
   }
 `;
 
-const StyledList = styled.ul`
+type UlProps = {
+  position: {
+    x: number;
+    y: number;
+  }
+}
+const StyledList = styled.ul<UlProps>`
   position: absolute;
   z-index: 1;
   background-color: var(--color-grey-0);
@@ -66,12 +73,19 @@ const StyledButton = styled.button`
   }
 `;
 
-const MenusContext = createContext()
+
+type MenusContextType = {
+  selectedMenuId: number | null;
+  setSelectedMenuId: React.Dispatch<React.SetStateAction<number | null>>; 
+  positionOfMenu: {x: number, y: number};
+  setPositionOfMenu: React.Dispatch<React.SetStateAction<{x: number, y: number}>>;
+}
+const MenusContext = createContext<MenusContextType | undefined>(undefined)
 
 
 //Compound Component
-function Menus({ children }) {
-  const [selectedMenuId, setSelectedMenuId] = useState(""); //tracks which menu is selected/opened
+function Menus({ children }:{ children: ReactNode }) {
+  const [selectedMenuId, setSelectedMenuId] = useState<number | null>(null); //tracks which menu is selected/opened
   const [positionOfMenu, setPositionOfMenu] = useState({x:0, y:0});
 
   return (
@@ -85,13 +99,18 @@ function Menus({ children }) {
 }
 
 
-function Toggle({ id }) {
-  const {selectedMenuId, setSelectedMenuId, setPositionOfMenu} = useContext(MenusContext)
+function Toggle({ id } : { id: number }) {
 
-  function handleToggleClick(e) {
+  const context = useContext(MenusContext);
+  if (!context) throw new Error("MenusContext missing");
+  const { selectedMenuId, setSelectedMenuId, setPositionOfMenu } = context;
+
+
+
+  function handleToggleClick(e: React.MouseEvent<HTMLButtonElement>) {
     
     if (id !== selectedMenuId) {
-      const positionOfButton = e.target.closest("button").getBoundingClientRect(); 
+      const positionOfButton = e.currentTarget.getBoundingClientRect(); 
       setSelectedMenuId(id) //open this menu
       setPositionOfMenu({ //set position of menu to position of button
         x: -8,
@@ -100,7 +119,7 @@ function Toggle({ id }) {
     }
 
     else {
-      setSelectedMenuId("") //if same menu is clicked again, close it
+      setSelectedMenuId(null) //if same menu is clicked again, close it
     }
   }
 
@@ -111,34 +130,47 @@ function Toggle({ id }) {
   )
 }
 
-
-function List({ id, children }) { // list of Buttons
-  const {selectedMenuId, positionOfMenu, setSelectedMenuId} = useContext(MenusContext)
+type ListProps = {
+  id: number;
+  children: ReactNode;
+}
+function List({ id, children }: ListProps) { // list of Buttons
+  
+  const context = useContext(MenusContext);
+  if (!context) throw new Error("MenusContext not found");
+  const {selectedMenuId, positionOfMenu, setSelectedMenuId} = context
 
   //custom hook to close menu on click outside
-  const  { modalElementRef }  = useCloseModalOnClickOutside(() => setSelectedMenuId("")) 
+  const { modalElementRef } = useCloseModalOnClickOutside(() => setSelectedMenuId(null)) 
 
   //if this menu is not selected, dont render anything
   if (id !== selectedMenuId) return null; 
 
   return( 
   <StyledList position={positionOfMenu} ref={modalElementRef}>
-       { children } {/*/ children are mulptiple Button components */}
-    </StyledList>
+       { children } {/*/ children are multiple Button components */}
+  </StyledList>
 )}
 
-
-function Button({ children, icon, onClick }) {//Button components (inside List)
-  const {setSelectedMenuId} = useContext(MenusContext)
+type ButtonProps = {
+  children: ReactNode;
+  icon: ReactNode;
+  selectedBtnFunction: () => void;
+}
+function Button({ children, icon, selectedBtnFunction }: ButtonProps) {//Button components (inside List)
+  
+  const context = useContext(MenusContext);
+  if (!context) throw new Error("MenusContext not found");
+  const { setSelectedMenuId } = context;
 
   function handleOnClick() {
-    onClick(); //executes function passed from CabinRow (e.g. duplicateCabin)
-    setSelectedMenuId(""); //close the menu after clicking a button
+    selectedBtnFunction(); //executes function passed from CabinRow (e.g. duplicateCabin)
+    setSelectedMenuId(null); //close the menu after clicking a button
   }
 
   return <li>
     <StyledButton onClick={handleOnClick}>
-      <span>{icon} {children} </span>  
+      <span>{icon} {children}</span>  
     </StyledButton>
   </li> 
 }

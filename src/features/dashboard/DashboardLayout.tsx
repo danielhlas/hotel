@@ -11,8 +11,33 @@ const StyledDashboardLayout = styled.div`
   gap: 2.4rem;
 `;
 
+type DashboardLayoutProps = {
+staysAfterDate: {
+ id: number;
+ created_at: Date;
+ cabinId: number;
+ cabinPrice: number;
+ endDate: Date;
+ guestId: number;
+ guests: {fullName: string};
+ hasBreakfast: boolean;
+ isPaid: boolean;
+ numGuests: number;
+ numNights: number;
+ observations: string;
+ startDate: Date;
+ status: string;
+ totalPrice: number;
+}[];
+daysSelectedNumber: number;
+bookingsAfterDate: {
+  created_at: Date;
+  extrasPrice: number;
+  totalPrice: number
+}[];
+}
 
-function DashboardLayout({ staysAfterDate, bookingsAfterDate, daysSelectedNumber }) {
+function DashboardLayout({ staysAfterDate, bookingsAfterDate, daysSelectedNumber }: DashboardLayoutProps) {
 
   return (
     <>

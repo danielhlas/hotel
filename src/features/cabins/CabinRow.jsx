@@ -69,7 +69,8 @@ function CabinRow({cabin}) {
       maxCapacity: cabin.maxCapacity, 
       regularPrice: cabin.regularPrice,
       discount: cabin.discount,
-      image: cabin.image
+      image: cabin.image,
+      description: cabin. description,
      }),
 
 		onSuccess: () => {
@@ -95,9 +96,9 @@ function CabinRow({cabin}) {
           <Menus.Menu>
             <Menus.Toggle id={cabin.id}/>
             <Menus.List id={cabin.id}>
-              <Menus.Button icon={<IoDuplicateSharp/>} onClick={()=>duplicateCabin(cabin)}>Duplicate</Menus.Button>
-              <Menus.Button icon={<FaEdit/>} onClick={() => setShowEditForm((showForm) => !showForm)}>Edit</Menus.Button>
-              <Menus.Button icon={<MdDeleteForever/>} onClick={() => setShowDeleteConfirmation((showDeleteConfirmation) => !showDeleteConfirmation)}>Delete</Menus.Button>
+              <Menus.Button icon={<IoDuplicateSharp/>} selectedBtnFunction={()=>duplicateCabin(cabin)}>Duplicate</Menus.Button>
+              <Menus.Button icon={<FaEdit/>} selectedBtnFunction={() => setShowEditForm((showForm) => !showForm)}>Edit</Menus.Button>
+              <Menus.Button icon={<MdDeleteForever/>} selectedBtnFunction={() => setShowDeleteConfirmation((showDeleteConfirmation) => !showDeleteConfirmation)}>Delete</Menus.Button>
             </Menus.List>
           </Menus.Menu>
         </span>

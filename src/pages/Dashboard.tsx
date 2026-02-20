@@ -46,9 +46,8 @@ function Dashboard() {
 
 
 
-
   if (isLoadingStayes || isLoadingBookings) return <Spinner />
-
+  {console.log("test" + staysAfterDate)}
 
   return (
     <>
