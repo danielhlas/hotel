@@ -60,13 +60,14 @@ type ModalProps = {
 function Modal({children, setShowForm}: ModalProps) {
 
 
-  const { modalElementRef } = useCloseModalOnClickOutside(setShowForm);
+ const { modalElementRef } = useCloseModalOnClickOutside(() => setShowForm(false));
+
 
   return (
       <Overlay>
         <StyledModal ref={modalElementRef}>
-          <Button onClick={() => setShowForm((show)=>!show)}>
-            <IoCloseSharp />  {/*IoCloseSharp is just icon*/}
+          <Button onClick={() => setShowForm(false)}>
+            <IoCloseSharp />  {/* icon*/}
            </Button>
 
           <div>

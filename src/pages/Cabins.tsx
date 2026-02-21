@@ -21,7 +21,7 @@ function Cabins() {
       <Row>
         <CabinTable />
         <div>
-          <Button onClick={()=>setShowForm((show)=>!show)}>Add Cabin</Button>
+          <Button data-outside-ignore onClick={()=>setShowForm((show)=>!show)}>Add Cabin</Button>
         </div>
       </Row>
 

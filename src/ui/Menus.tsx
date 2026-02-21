@@ -10,6 +10,7 @@ const Menu = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  padding: 0.3rem;
 `;
 
 const StyledToggle = styled.button`
@@ -43,6 +44,7 @@ const StyledList = styled.ul<UlProps>`
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
+  min-width: 135px;
 
   right: ${(props) => props.position.x}px;
   top: ${(props) => props.position.y}px;
@@ -53,13 +55,13 @@ const StyledButton = styled.button`
   text-align: left;
   background: none;
   border: none;
-  padding: 1.2rem 2.4rem;
+  padding: 1.2rem 1.5rem;
   font-size: 1.4rem;
   transition: all 0.2s;
-
+  
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: 0.8rem;
 
   &:hover {
     background-color: var(--color-grey-50);
@@ -108,7 +110,7 @@ function Toggle({ id } : { id: number }) {
 
 
   function handleToggleClick(e: React.MouseEvent<HTMLButtonElement>) {
-    
+    e.stopPropagation(); //zastaví šíření eventu do rodičů
     if (id !== selectedMenuId) {
       const positionOfButton = e.currentTarget.getBoundingClientRect(); 
       setSelectedMenuId(id) //open this menu
@@ -124,7 +126,7 @@ function Toggle({ id } : { id: number }) {
   }
 
   return(
-    <StyledToggle onClick={handleToggleClick}>
+    <StyledToggle data-outside-ignore onClick={handleToggleClick}>
       <HiEllipsisVertical/> {/*three dots icon*/}
     </StyledToggle>
   )
@@ -170,7 +172,12 @@ function Button({ children, icon, selectedBtnFunction }: ButtonProps) {//Button 
 
   return <li>
     <StyledButton onClick={handleOnClick}>
-      <span>{icon} {children}</span>  
+      <span>
+        {icon}
+      </span>
+      <span>
+         {children}
+       </span>
     </StyledButton>
   </li> 
 }

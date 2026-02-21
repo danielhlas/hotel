@@ -36,9 +36,24 @@ const Amount = styled.div`
 `;
 
 
-
-function BookingRow({
+type BookingRowProps = {
   booking: {
+    id: number;
+    created_at: any;
+    startDate: any;
+    endDate: any;
+    numNights: number;
+    numGuests: number;
+    totalPrice: number;
+    status: string;
+    guests: { fullName: string; email: string } | null;
+    cabins: { name: string } | null;
+  }
+}
+
+function BookingRow({ booking } : BookingRowProps) {
+  if (booking === null)  throw new Error("booking se nenačetl")
+  const {
     id: bookingId,
     created_at,
     startDate,
@@ -47,15 +62,16 @@ function BookingRow({
     numGuests,
     totalPrice,
     status,
-    guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
-  },
-}) {
+    guests,
+    cabins,
+  } = booking;
+  const guestName = guests?.fullName ?? "Unknown guest";
+  const email = guests?.email ?? "No email";
+  const cabinName = cabins?.name ?? "Unknown cabin";
   //const { mutate: deleteBooking, isLoading: isDeleting } = useDeleteBooking();
 //const { mutate: checkout, isLoading: isCheckingOut } = useCheckout();
 
   const navigate = useNavigate();
-
 
   const statusToTagName = {
     unconfirmed: 'blue',

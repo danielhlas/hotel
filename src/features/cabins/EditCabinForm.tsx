@@ -97,7 +97,8 @@ function EditCabinForm({ cabinToEdit, setShowEditForm }: EditCabinFormProps) {
 		onSuccess: () => {
       reset();	
 			queryClient.invalidateQueries({queryKey: ["cabins"]});
-      toast.success("The cabin was edited.")
+      setShowEditForm(false);
+      toast.success("The cabin was edited.");
 		},
 		onError: () => toast.error("An unknown error occurred."),
 	})

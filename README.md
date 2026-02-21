@@ -1,5 +1,5 @@
 # Hotel
-- React, Typescript, Tailwind, React Hook Form, Toats notifications
+- React, Typescript, React Hook Form, Toats notifications
 - Live: https://react-hotel-cz.netlify.app/
 - Data stored on the server (Supabase)
 
