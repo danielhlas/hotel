@@ -3,6 +3,7 @@ import { useEditSettings } from './useEditSettings';
 import Form from '../../ui/Form';
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
+import type { updateSettingProps } from '../../services/apiSettings';
 
 function UpdateSettingsForm() {
 
@@ -12,17 +13,19 @@ function UpdateSettingsForm() {
     maxBookingLength, 
     maxGuestsPerBooking, 
     breakfastPrice
-    }={},  } = useSettings();
+    }={},  
+  } = useSettings();
 
 
     //Update data from Supabase
-    const {isEditing: isUpdating, editSettings} = useEditSettings();
+    const { isEditing: isUpdating, editSettings } = useEditSettings();
+
 
     //Reusable function to update input values:
-    function handleUpdateInput(e, inputName) {
+    function handleUpdateInput(e: React.FocusEvent<HTMLInputElement>, inputName: keyof updateSettingProps) {
       if (!e.target) return
       if(e.target.value) {
-        editSettings({[inputName]: e.target.value})
+        editSettings({[inputName]: Number(e.target.value)})
       }
     }
 

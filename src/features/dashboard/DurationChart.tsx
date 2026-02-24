@@ -1,14 +1,8 @@
 //import { useDarkMode } from 'context/DarkModeContext';
-import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts';
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import styled from 'styled-components';
 import Heading from '../../ui/Heading';
+import { type stayAfterDateType } from "./DashboardLayout"
 
 const ChartBox = styled.div`
   background-color: var(--color-grey-0);
@@ -71,15 +65,30 @@ const startDataLight = [
   },
 ];
 
-
+type startDataLightType =  {
+  duration: string,
+  value: number,
+  color: string,
+}[]
 //Function reducing our data to new array with formated datta
-function prepareData(startData, stays= [] ) {
+function prepareData(startDataLight: startDataLightType, stays: stayAfterDateType[]) {
 
-  function incArrayValue(arr, field) {
+  type ItemType = {
+    duration: string;
+    value: number;
+  };
+  
+  type ChartItem = {
+    duration: string;
+    value: number;
+    color: string;
+  };
+  function incArrayValue(arr: ChartItem[], field: string) {
     return arr.map((obj) =>
       obj.duration === field ? { ...obj, value: obj.value + 1 } : obj
     );
   }
+
 
   const data = stays
     .reduce((arr, cur) => {
@@ -93,7 +102,7 @@ function prepareData(startData, stays= [] ) {
       if (num >= 15 && num <= 21) return incArrayValue(arr, '15-21 nights');
       if (num >= 21) return incArrayValue(arr, '21+ nights');
       return arr;
-    }, startData)
+    }, startDataLight)
     .filter((obj) => obj.value > 0);
 
   return data;
@@ -101,7 +110,7 @@ function prepareData(startData, stays= [] ) {
 
 
 
-function DurationChart({ staysAfterDate }) {
+function DurationChart({ staysAfterDate } : { staysAfterDate: stayAfterDateType[] }) {
 
   //const { isDarkMode } = useDarkMode();
   //const startData = isDarkMode ? startDataDark : startDataLight;
@@ -119,7 +128,7 @@ function DurationChart({ staysAfterDate }) {
           <Cell fill={cur.color} stroke={cur.color} key={cur.duration}/> )
           }
         </Pie>     
-        <Legend verticalAlign="middle" align="right" width="30%" layout="vertical" iconSize={15} iconType="circle"  /> 
+        <Legend verticalAlign="middle" align="right" width={120} layout="vertical" iconSize={15} iconType="circle"  /> 
         <Tooltip/>
        </PieChart>
       </ResponsiveContainer>

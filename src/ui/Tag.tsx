@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 type TagProps = {
-  $type?: "horizontal" | "vertical";
+  $type?: "blue" | "green" | "silver";
 };
 
 const Tag = styled.span<TagProps>`

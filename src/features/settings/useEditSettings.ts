@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-
 import { updateSetting } from "../../services/apiSettings";
 
 
@@ -13,7 +12,11 @@ export function useEditSettings() {
         toast.success("Setting successfully edited");
         queryClient.invalidateQueries({ queryKey: ["settings"] });
       },
-      onError: (err: Error) => toast.error(err.message),
+      onError: (err) => {
+        if (err instanceof Error){
+          alert(err.message)
+        }
+      }
     });
   
     return { isEditing, editSettings };

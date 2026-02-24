@@ -22,7 +22,7 @@ function CabinTable() {
 
   if(isLoading) return <Spinner/>
   
-  if(!cabins.length) {
+  if(!cabins?.length) {
     return <Empty resource="cabins" />
   }
   
@@ -39,15 +39,26 @@ function CabinTable() {
     filteredCabins = cabins.filter(cabin => cabin.discount > 0);
   }
 
-
+  
   //2. Sorting (after filtering, so we sort only the filtered items)
   const sortValue = searchParams.get("sort") || "name-asc";
 
   const [field, direction] = sortValue.split("-");
   const modifier = direction === "asc" ? 1 : -1;
 
+  type CabinType = {
+    id: number;
+    image: "string";
+    maxCapacity: number;
+    name: string;
+    regularPrice: number;
+    discount: number;
+    description: string;
+    created_at: Date;
+  }
+
   //Special case for string (name)
-  function compare(a, b) {
+  function compare(a: CabinType, b: CabinType) {
     if (a["name"] < b["name"]) {
       return -1 * modifier;
     }
@@ -59,8 +70,8 @@ function CabinTable() {
  
   const sortedCabins =
       field === "name"
-      ? filteredCabins.sort(compare)
-      : filteredCabins.sort((a, b) => (a[field] - b[field]) * modifier);
+      ? filteredCabins?.sort(compare)
+      : filteredCabins?.sort((a, b) => (a[field] - b[field]) * modifier);
 
 
   return (

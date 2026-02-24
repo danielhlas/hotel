@@ -6,14 +6,19 @@ import toast from "react-hot-toast";
 
 
 // Get all bookings
-export async function getBookings({ filterValue, splittedSortValue, currentPage }) {
+type getBookingsType = {
+  filterValue: string;
+  splittedSortValue: {field: string, direction: string};
+  currentPage: number;
+}
+export async function getBookings({ filterValue, splittedSortValue, currentPage}: getBookingsType) {
 
   let promenna123 = supabase
     .from('bookings')
     .select('*, cabins(name), guests(fullName, email)', { count: 'exact' });
 
   // Apply filter if user selected one
-  if (filterValue) {
+  if (filterValue && filterValue !== "all") {
     promenna123 = promenna123.eq('status', filterValue);
   }
 
@@ -44,7 +49,7 @@ export async function getBookings({ filterValue, splittedSortValue, currentPage 
 }
 
 //Get a single booking by ID
-export async function getBooking(id) {
+export async function getBooking(id: number) {
   const { data, error } = await supabase
     .from("bookings")
     .select("*, cabins(*), guests(*)")
@@ -62,7 +67,7 @@ export async function getBooking(id) {
 
 
 // RETURN BOOKINGS created after given date (usefull for dashboard (last 30 days etc))
-export async function getBookingsAfterDate(date) {
+export async function getBookingsAfterDate(date: string) {
   const { data, error } = await supabase
     .from("bookings")
     .select("created_at, totalPrice, extrasPrice")
@@ -80,7 +85,7 @@ export async function getBookingsAfterDate(date) {
 
 // RETURN STAYS created after given date
 // Stays = bookings with status "unconfirmed" or "checked-in"
-export async function getStaysAfterDate(date) {
+export async function getStaysAfterDate(date: string) {
   const { data, error } = await supabase
     .from("bookings")
     .select("*, guests(fullName)")
@@ -121,7 +126,7 @@ export async function getStaysTodayActivity() {
 
 
 
-export async function updateBooking(id, obj) {
+export async function updateBooking(id: number, obj: any) {
   const { data, error } = await supabase
     .from("bookings")
     .update(obj)
@@ -136,7 +141,7 @@ export async function updateBooking(id, obj) {
   return data;
 }
 
-export async function deleteBooking(id) {
+export async function deleteBooking(id: number) {
   // REMEMBER RLS POLICIES
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 

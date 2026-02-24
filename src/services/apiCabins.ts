@@ -1,3 +1,4 @@
+import type { CabinRowType } from "../features/cabins/CabinRow";
 import supabase from "./supabase";
 import toast from "react-hot-toast";
 
@@ -42,9 +43,8 @@ export type CabinType = {
 	image: string | File;
   };
   
-  
 
-export async function deleteCabin(cabin: CabinType) {
+export async function deleteCabin(cabin: CabinRowType) {
 
 	//-----Code from Supabase doc-----
 	const { data, error } = await supabase
@@ -99,7 +99,7 @@ export async function addCabin(newCabin: AddCabinInputType) {
 		//-----------
 
 		if(imgError) {
-			throw new Error("Obrázek nemohl být nahrán, pokoj nebyl přidán.");
+			throw new Error("Image could not be uploaded, cabin was not added.");
 		}
 	}
 

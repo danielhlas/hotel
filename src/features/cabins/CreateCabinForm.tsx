@@ -7,7 +7,7 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { addCabin, type AddCabinInputType  } from "../../services/apiCabins";
+import { addCabin, type AddCabinInputType, type CabinType  } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 
 const FormRow = styled.div`
@@ -66,16 +66,17 @@ function CreateCabinForm({showForm, setShowForm}: CreateCabinFormProps) {
   const { register, handleSubmit, reset, formState, getValues } = useForm<Inputs>();
   const queryClient = useQueryClient();
 
-  const {mutate, isLoading} = useMutation({
+  const {mutate, isLoading} = useMutation<CabinType[], Error, AddCabinInputType>({
 		mutationFn: (newcabin: AddCabinInputType) => addCabin(newcabin),
 		onSuccess: () => {
 			toast.success("New cabin successfully added")
 			queryClient.invalidateQueries({queryKey: ["cabins"]});
 			reset();	
 		},
-		onError: (errors) => {
-      toast.error("An unknown error occurred.")
-      console.log(errors);
+		onError: (err) => {
+      if (err instanceof Error){
+        alert(err.message)
+      }
     }
 	})
 	

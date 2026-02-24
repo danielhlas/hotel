@@ -45,7 +45,7 @@ type BookingRowProps = {
     numNights: number;
     numGuests: number;
     totalPrice: number;
-    status: string;
+    status: "unconfirmed" | "checked-in" | "checked-out";
     guests: { fullName: string; email: string } | null;
     cabins: { name: string } | null;
   }
@@ -73,7 +73,8 @@ function BookingRow({ booking } : BookingRowProps) {
 
   const navigate = useNavigate();
 
-  const statusToTagName = {
+  const statusToTagName: Record< "unconfirmed" | "checked-in" | "checked-out",
+  "blue" | "green" | "silver">  = {
     unconfirmed: 'blue',
     'checked-in': 'green',
     'checked-out': 'silver',

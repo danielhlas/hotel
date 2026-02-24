@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { formatCurrency } from '../../utils/helpers';
 import { getCabins } from '../../services/apiCabins';
 import { useQuery } from '@tanstack/react-query';
+import type { BookingsAfterDateType, stayAfterDateType } from './DashboardLayout';
 
 
 const StyledStat = styled.div`
@@ -53,8 +54,12 @@ const Value = styled.p`
 `;
 
 
-function Stats({ bookingsAfterDate, staysAfterDate, daysSelectedNumber }) {
-
+type StatsProps = {
+  bookingsAfterDate: BookingsAfterDateType;
+  staysAfterDate: stayAfterDateType[];
+  daysSelectedNumber: number;
+}
+function Stats({ bookingsAfterDate, staysAfterDate, daysSelectedNumber }: StatsProps) {
     const {isLoading, data: cabins, error} = useQuery({
       queryKey: ["cabins"],
       queryFn: () => getCabins()
@@ -66,7 +71,8 @@ function Stats({ bookingsAfterDate, staysAfterDate, daysSelectedNumber }) {
   const sumTotalPrices = bookingsAfterDate?.reduce((acc, curr) => acc + curr.totalPrice, 0)
   const confirmedCheckIns = staysAfterDate?.length;
 
-  const occupancyRate = (numOfBookings / (cabins.length * daysSelectedNumber)) * 100;
+  const safeCabins = cabins ?? [];
+  const occupancyRate = (numOfBookings / (safeCabins.length * daysSelectedNumber)) * 100;
 
   return (
     <>

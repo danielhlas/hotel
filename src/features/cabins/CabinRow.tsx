@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import toast from "react-hot-toast";
 import styled from "styled-components";
 import { useState } from "react";
@@ -9,7 +7,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 
 import { formatCurrency } from "../../utils/helpers";
-import { addCabin, deleteCabin } from "../../services/apiCabins";
+import { addCabin, deleteCabin, type CabinType } from "../../services/apiCabins";
 import EditCabinForm from "./EditCabinForm";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
@@ -43,8 +41,18 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
+export type CabinRowType = {
+  created_at: Date;
+  description: string;
+  discount: number;
+  id: number;
+  image: string;
+  maxCapacity: number;
+  name: string;
+  regularPrice: number;
+}
 
-function CabinRow({cabin}) {
+function CabinRow({ cabin } : { cabin: CabinRowType }) {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
@@ -52,19 +60,23 @@ function CabinRow({cabin}) {
 	
   //Mazání řádku/případu ze Supabase tabulky:
 	const {isLoading, mutate} = useMutation({
-		mutationFn: (id) => deleteCabin(id), 
+		mutationFn: (cabin: CabinRowType) => deleteCabin(cabin), 
 		onSuccess: () => {
       toast.success("Cabin successfully deleted");
 			queryClient.invalidateQueries({
 				queryKey: ["cabins"]
 			})
 		},
-		onError: (err) => alert(err.message)
+		onError: (err) => {
+      if (err instanceof Error){
+        alert(err.message)
+      }
+    }
 	})
 
   //Duplikace řádku
   const {mutate: duplicateCabin, isLoading: isDuplicatingCabin} = useMutation({
-		mutationFn: cabin => addCabin({
+		mutationFn: (cabin: CabinRowType) => addCabin({
       name: `Copy of ${cabin.name}`, 
       maxCapacity: cabin.maxCapacity, 
       regularPrice: cabin.regularPrice,
@@ -77,7 +89,11 @@ function CabinRow({cabin}) {
 			toast.success("New cabin successfully added")
 			queryClient.invalidateQueries({queryKey: ["cabins"]});
 		},
-		onError: (err) => toast.error(err),
+    onError: (err) => {
+      if (err instanceof Error){
+        alert(err.message)
+      }
+    }
 	})
 
 
@@ -117,7 +133,7 @@ function CabinRow({cabin}) {
       {showDeleteConfirmation && (
         <Modal setShowForm={setShowDeleteConfirmation}>
           <ConfirmDelete
-            resource={cabin.name} // nebo jiný čitelný text
+            resource={cabin.name}
             onConfirm={() => {
               mutate(cabin);
               setShowDeleteConfirmation(false);

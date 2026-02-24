@@ -47,32 +47,34 @@ function TodayActivity() {
     queryKey: ["TodayActivity"],
     queryFn: () => getStaysTodayActivity(),
   })
-
+  const safeData = data ?? [];
   //if not enough data:
   useEffect(function () {
-    if (!isLoading && data?.length < 2) {
+    
+    if (!isLoading && safeData.length < 2) {
       uploadBookings().then(() => {
         queryClient.invalidateQueries({ queryKey: ["TodayActivity"], refetchType: 'active' })
       })
       console.log("data less than 2, uploadBookings() done")
     }
-  }, [data, isLoading])
+  }, [safeData, isLoading])
 
 
   if (isLoading) return
-
+  
+ 
 
   return (
     <StyledToday>
-      <Row type="horizontal">
+      <Row $type="horizontal">
         <Heading as="h2">Today</Heading>
       </Row>
 
       {
-        (data.length > 0)
+        (safeData.length > 0)
           ?
           <TodayList>
-            {data.map(current => <TodayItem current={current} key={current.id} />)}
+            {data?.map(current => <TodayItem current={current} key={current.id} />)}
           </TodayList>
           :
           <NoActivity>No activity today</NoActivity>

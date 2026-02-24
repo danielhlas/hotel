@@ -2,11 +2,11 @@ import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 import DashboardLayout from "../features/dashboard/DashboardLayout";
 import FilterDashboard from "../features/dashboard/FilterDashboard";
+import Spinner from "../ui/Spinner";
 import { subDays } from "date-fns";
 import { getBookingsAfterDate, getStaysAfterDate } from "../services/apiBookings";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
-import Spinner from "../ui/Spinner";
 import { uploadBookings } from "../data/Uploader";
 import { useEffect } from "react";
 
@@ -25,6 +25,9 @@ function Dashboard() {
     queryKey: ["StaysAfterDate", daysSelectedNumber],
     queryFn: () => getStaysAfterDate(queryDate)
   })
+  
+
+  
 
   //if not enough data, upload new bookings to database and refetch:
   useEffect(function () {
@@ -45,9 +48,11 @@ function Dashboard() {
 
 
 
-
   if (isLoadingStayes || isLoadingBookings) return <Spinner />
-  {console.log("test" + staysAfterDate)}
+
+  //Data guard
+  if (!staysAfterDate) throw new Error("Data from staysAfterDate are missing")
+  if (!bookingsAfterDate) throw new Error("Data from bookingsAfterDate are missing")
 
   return (
     <>

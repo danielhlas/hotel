@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import Heading from '../../ui/Heading';
 import DashboardBox from './DashboardBox';
 import { subDays, eachDayOfInterval, format, isSameDay } from 'date-fns';
+import  {type BookingsAfterDateType} from "./DashboardLayout";
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;
@@ -21,14 +22,18 @@ const StyledSalesChart = styled(DashboardBox)`
   & .recharts-cartesian-grid-vertical line {
     stroke: var(--color-grey-300);
   }
-  /* Hack to change grid line colors */
-
 `;
 
-function SalesChart({bookingsAfterDate = [], daysSelectedNumber = 7}) {
 
 
-  const listOfSelectedDates = eachDayOfInterval({
+type daysSelectedNumberType = number;
+type SalesChartProps = {
+  bookingsAfterDate: BookingsAfterDateType;
+  daysSelectedNumber: number;
+}
+function SalesChart({bookingsAfterDate = [], daysSelectedNumber = 7}: SalesChartProps) {
+
+  const listOfSelectedDates = eachDayOfInterval({ 
     start: subDays(new Date(), daysSelectedNumber - 1),
     end: new Date(),
   })
@@ -53,10 +58,13 @@ function SalesChart({bookingsAfterDate = [], daysSelectedNumber = 7}) {
   background: "#fff",
 };
 
+const firstDate = listOfSelectedDates[0];
+const lastDate = listOfSelectedDates[listOfSelectedDates.length - 1];
+
   return (
     <StyledSalesChart>
 
-      <Heading as="h2">Sales:  {format(listOfSelectedDates.at(0), "MMM dd yyyy")} - {format(listOfSelectedDates.at(-1), "MMM dd yyyy")}</Heading>
+      <Heading as="h2">Sales:  {format(firstDate, "MMM dd yyyy")} - {format(lastDate, "MMM dd yyyy")}</Heading>
 
       <ResponsiveContainer height={300} width="100%">
           <AreaChart data={data} >

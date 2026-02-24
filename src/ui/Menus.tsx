@@ -147,7 +147,7 @@ function List({ id, children }: ListProps) { // list of Buttons
 
   //if this menu is not selected, dont render anything
   if (id !== selectedMenuId) return null; 
-
+  if (!modalElementRef) return;
   return( 
   <StyledList position={positionOfMenu} ref={modalElementRef}>
        { children } {/*/ children are multiple Button components */}

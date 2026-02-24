@@ -12,7 +12,7 @@ function BookingTable() {
 
   // FILTERING
   const [searchParams] = useSearchParams();
-  let filterValue = searchParams.get("status");
+  let filterValue = searchParams.get("status") ?? "all";
 
 
   //SORTING
@@ -24,8 +24,8 @@ function BookingTable() {
   //PAGINATION
   const currentPage = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
 
-  
-//QUERY
+
+ //QUERY
   const {isLoading, data: {data: bookings, count} = {}, error} = useQuery({
     queryKey: ["bookings", filterValue, splittedSortValue, currentPage],
     queryFn: () => getBookings({filterValue, splittedSortValue, currentPage}),

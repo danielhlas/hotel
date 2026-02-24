@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Tag from "../../ui/Tag"
-import {Flag} from "../../ui/Flag"
+import { Flag } from "../../ui/Flag"
 
 const StyledTodayItem = styled.li`
   display: grid;
@@ -25,14 +25,36 @@ const Guest = styled.div`
   font-weight: 500;
 `;
 
+type StayType = {
+  cabinId: number;
+  cabinPrice: number;
+  created_at: Date;
+  endDate: Date;
+  extrasPrice: number;
+  guestId: number;
+  guests: {
+    fullName: string,
+    countryFlag: string,
+    nationality: string,
+  };
+  hadBreakfast: boolean;
+  id: number;
+  isPaid: boolean;
+  numGuests: number;
+  numNights: number;
+  observations: string;
+  starDate: Date;
+  status: string;
+  totalPrice: number;
+}
 
-function TodayItem({ current }) {
-  //console.log(current)
+function TodayItem({ current } : { current: StayType }) {
+
   return (
     <div>
       <StyledTodayItem>
-        {current.status === "unconfirmed" && <Tag type="green">Will arrive</Tag>}
-        {current.status === "checked-in" && <Tag type="blue">Will depart</Tag>}
+        {current.status === "unconfirmed" && <Tag $type="green">Will arrive</Tag>}
+        {current.status === "checked-in" && <Tag $type="blue">Will depart</Tag>}
         <Flag src={current.guests.countryFlag} />
         <Guest>{current.guests.fullName}</Guest>
         <div>{current.numNights} nights</div>

@@ -82,14 +82,14 @@ function EditCabinForm({ cabinToEdit, setShowEditForm }: EditCabinFormProps) {
   const oldImgUrl = cabinToEdit.image as string;
 
 
-  type EditCabinPayload = {
+  type EditCabinType = {
     cabin: CabinType;
     image: string | File;
     id: number;
   };
 
-  const {mutate, isLoading} = useMutation({
-		mutationFn: (payload : EditCabinPayload) => {
+  const { mutate, isLoading } = useMutation<CabinType[], Error, EditCabinType>({
+		mutationFn: (payload: EditCabinType) => {
 			return editCabin({ ...payload.cabin, id: payload.id }, oldImgUrl, payload.image);
       //editCabin(newCabin: CabinType, oldImgUrl: string, image: string | File)
 
@@ -100,7 +100,11 @@ function EditCabinForm({ cabinToEdit, setShowEditForm }: EditCabinFormProps) {
       setShowEditForm(false);
       toast.success("The cabin was edited.");
 		},
-		onError: () => toast.error("An unknown error occurred."),
+    onError: (err) => {
+      if (err instanceof Error){
+        alert(err.message)
+      }
+    }
 	})
 	
 

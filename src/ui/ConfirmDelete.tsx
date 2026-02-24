@@ -23,9 +23,8 @@ const StyledConfirmDelete = styled.div`
 type ConfirmDeleteProps = {
   resource: string;
   onConfirm: () => void ;
-  close?: () => void;
+  close: () => void;
 }
-
 
 function ConfirmDelete({ resource, onConfirm, close }: ConfirmDeleteProps) {
   
@@ -42,7 +41,7 @@ function ConfirmDelete({ resource, onConfirm, close }: ConfirmDeleteProps) {
       </p>
 
       <div>
-        <Button $variation="secondary" onClick={() => close?.()}>
+        <Button $variation="secondary" onClick={() => close()}>
           Cancel
         </Button>
         <Button
