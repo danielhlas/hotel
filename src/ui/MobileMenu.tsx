@@ -7,7 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "@/ui/shadcn/sheet";
 import MainNav from "./MainNav";
 import Logo from "./Logo";
 import { useState } from "react";

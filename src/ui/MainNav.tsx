@@ -7,7 +7,7 @@ import {
   HiOutlineHomeModern,
   HiOutlineUsers,
 } from "react-icons/hi2";
-import { SheetClose } from "@/components/ui/sheet";
+import { SheetClose } from "@/ui/shadcn/sheet";
 
 const NavList = styled.ul`
   display: flex;

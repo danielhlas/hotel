@@ -8,8 +8,8 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-} from "@/components/shadcn/drawer"
-import { Button } from "@/components/shadcn/ShadcnButton";
+} from "@/ui/shadcn/drawer"
+import { Button } from "@/ui/shadcn/ShadcnButton";
 
 
 const StyledSidebar = styled.aside`
