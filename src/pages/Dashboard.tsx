@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { uploadBookings } from "../data/Uploader";
 import { useEffect } from "react";
+import HeaderOfPage from "@/ui/HeaderOfPage";
 
 function Dashboard() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -56,10 +57,10 @@ function Dashboard() {
 
   return (
     <>
-      <Row $type="horizontal">
-        <Heading as="h1">Dashboard</Heading>
-        <FilterDashboard />
-      </Row>
+        <HeaderOfPage>
+          <Heading as="h1">Dashboard</Heading>
+          <FilterDashboard />
+        </HeaderOfPage>
 
       <DashboardLayout staysAfterDate={staysAfterDate} bookingsAfterDate={bookingsAfterDate} daysSelectedNumber={daysSelectedNumber} />
     </>

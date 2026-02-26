@@ -14,6 +14,7 @@ const StyledFilterDiv = styled.div`
 const FilterButton = styled.button<{ $active?: boolean }>`
   background-color: var(--color-grey-0);
   border: none;
+  text-align: center;
 
   ${(props) =>
     props.$active &&
@@ -34,7 +35,6 @@ const FilterButton = styled.button<{ $active?: boolean }>`
     color: var(--color-brand-50);
   }
 `;
-
 
 
 function FilterBookings() {

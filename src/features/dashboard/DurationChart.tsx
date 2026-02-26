@@ -9,7 +9,6 @@ const ChartBox = styled.div`
   border: 1px solid var(--color-grey-100);
   border-radius: 0.8rem;
   padding: 2.4rem 3.2rem;
-  grid-column: 3 / span 2;
 
   & .recharts-pie-label-text {
     font-weight: 600;
@@ -121,17 +120,19 @@ function DurationChart({ staysAfterDate } : { staysAfterDate: stayAfterDateType[
     <ChartBox>
       <Heading as="h2">Stay duration summary</Heading>
 
-      <ResponsiveContainer width="100%" height={240}>
-        <PieChart>
-        <Pie data={data} nameKey="duration" dataKey="value" innerRadius={50} outerRadius={90}>
-          {data.map((cur)=> 
-          <Cell fill={cur.color} stroke={cur.color} key={cur.duration}/> )
-          }
-        </Pie>     
-        <Legend verticalAlign="middle" align="right" width={120} layout="vertical" iconSize={15} iconType="circle"  /> 
-        <Tooltip/>
-       </PieChart>
-      </ResponsiveContainer>
+      <div className="w-full lg:w-[45rem] xl:w-full justify-self-center ">
+        <ResponsiveContainer width="100%" height={240}>
+          <PieChart>
+          <Pie data={data} nameKey="duration" dataKey="value" innerRadius={50} outerRadius={90}>
+            {data.map((cur)=> 
+            <Cell fill={cur.color} stroke={cur.color} key={cur.duration}/> )
+            }
+          </Pie>     
+          <Legend verticalAlign="middle" align="right" width={120} layout="vertical" iconSize={15} iconType="circle"  /> 
+          <Tooltip/>
+        </PieChart>
+        </ResponsiveContainer>
+      </div>
 
     </ChartBox>
   );

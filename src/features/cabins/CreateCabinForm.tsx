@@ -11,12 +11,16 @@ import { addCabin, type AddCabinInputType, type CabinType  } from "../../service
 import toast from "react-hot-toast";
 
 const FormRow = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
   gap: 2.4rem;
-
   padding: 1.2rem 0;
+
+  @media (min-width: 400px) {
+     flex-direction: row;
+   }
 
   &:first-child {
     padding-top: 0;

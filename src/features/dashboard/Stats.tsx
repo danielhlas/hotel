@@ -73,9 +73,11 @@ function Stats({ bookingsAfterDate, staysAfterDate, daysSelectedNumber }: StatsP
 
   const safeCabins = cabins ?? [];
   const occupancyRate = (numOfBookings / (safeCabins.length * daysSelectedNumber)) * 100;
+  const finalSalesNum = String(formatCurrency(sumTotalPrices)).replace(".00", "")
+
 
   return (
-    <>
+    <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4'>
 
     <StyledStat>
       <Icon color="blue"><HiOutlineBriefcase/></Icon>
@@ -86,7 +88,7 @@ function Stats({ bookingsAfterDate, staysAfterDate, daysSelectedNumber }: StatsP
     <StyledStat>
       <Icon color="green"><HiOutlineBanknotes/></Icon>
       <Title>Sales</Title>
-      <Value>{formatCurrency(sumTotalPrices)}</Value>
+      <Value>{finalSalesNum}</Value>
     </StyledStat>
 
     <StyledStat>
@@ -101,7 +103,7 @@ function Stats({ bookingsAfterDate, staysAfterDate, daysSelectedNumber }: StatsP
       <Value>{Math.round(occupancyRate)}%</Value>
     </StyledStat>
 
-   </>
+   </div>
   );
 }
 

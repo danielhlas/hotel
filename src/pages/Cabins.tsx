@@ -7,16 +7,17 @@ import Modal from "../ui/Modal";
 import CabinTable from "../features/cabins/CabinTable";
 import CreateCabinForm from "../features/cabins/CreateCabinForm";
 import CabinsFilterSort from "../features/cabins/CabinsFilterSort";
+import HeaderOfPage from "@/ui/HeaderOfPage";
 
 function Cabins() {
   const [showForm, setShowForm] = useState(false);
 
   return (
     <>
-      <Row $type="horizontal">
-        <Heading as="h1" style={{marginBottom: "45px"}}>All cabins</Heading>
+      <HeaderOfPage breakpoint="lg:flex-row">
+        <Heading as="h1">Cabins</Heading>
         <CabinsFilterSort/>
-      </Row>
+      </HeaderOfPage>
 
       <Row>
         <CabinTable />

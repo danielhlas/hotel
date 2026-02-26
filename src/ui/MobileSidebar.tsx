@@ -2,19 +2,10 @@ import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 import Uploader from "../data/Uploader";
-import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/components/shadcn/drawer"
-import { Button } from "@/components/shadcn/ShadcnButton";
-
 
 const StyledSidebar = styled.aside`
   background-color: var(--color-grey-0);
-  padding: 3.2rem 2.4rem;
+  padding: 5.5rem 2.4rem;
   border-right: 1px solid var(--color-grey-100);
 
   grid-row: 1 / -1;
@@ -23,16 +14,17 @@ const StyledSidebar = styled.aside`
   gap: 3.2rem;
 `;
 
-export function Sidebar() {
+function MobileSidebar() {
   return (
-    
     <StyledSidebar>
+      
       <Logo />
       <MainNav />
     
       {/*<Uploader />  Uploader is temporary function for development */}
+
     </StyledSidebar>
   );
 }
 
-export default Sidebar;
+export default MobileSidebar;

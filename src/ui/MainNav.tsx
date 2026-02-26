@@ -7,6 +7,7 @@ import {
   HiOutlineHomeModern,
   HiOutlineUsers,
 } from "react-icons/hi2";
+import { SheetClose } from "@/components/ui/sheet";
 
 const NavList = styled.ul`
   display: flex;
@@ -53,16 +54,15 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-function MainNav() {
-  return (
+function MainNav({ closeMobileMenu } : { closeMobileMenu?: () => void }) {  return (
     <nav>
       <NavList>
 
-        <li>
-           <StyledNavLink to="/dashboard">
-            <HiOutlineHome />
-            <span>Home</span>
-          </StyledNavLink>
+        <li onClick={closeMobileMenu}>
+            <StyledNavLink to="/dashboard" >
+              <HiOutlineHome />
+              <span>Home</span>
+             </StyledNavLink>
         </li>
         
       {/*
@@ -73,19 +73,19 @@ function MainNav() {
         </li> 
       */}
 
-       <li>
-        <StyledNavLink to="/bookings">
+       <li onClick={closeMobileMenu}>
+          <StyledNavLink to="/bookings">
             <HiOutlineCalendarDays />
             <span>Bookings</span>
           </StyledNavLink>
         </li>        
-        <li>
+        <li onClick={closeMobileMenu}>
           <StyledNavLink to="/cabins">
             <HiOutlineHomeModern />
             <span>Cabins</span>
           </StyledNavLink>
         </li>
-        <li>
+        <li onClick={closeMobileMenu}>
           <StyledNavLink to="/settings">
             <HiOutlineCog6Tooth />
             <span>Settings</span>

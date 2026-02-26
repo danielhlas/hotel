@@ -16,8 +16,15 @@
 "jsx": "react-jsx",
 "lib": ["ESNext", "DOM"], //dictate which typings are included. Since this is a browser-based app, dom needs to be included and esnext is recommended for supporting the latest ECMAscript features.
 "skipLibCheck": true, // ignores type errors if they come from your npm packages, which limits errors to "just your code."
-"noEmit": true //ensures no actual TS code is output when running the compiler
+"noEmit": true, //ensures no actual TS code is output when running the compiler
 
+//from shadcn doc:
+"baseUrl": ".",
+"paths": {
+  "@/*": [
+    "./src/*"
+  ]
+}
  }
 }
 

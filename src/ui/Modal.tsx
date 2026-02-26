@@ -66,9 +66,11 @@ function Modal({children, setShowForm}: ModalProps) {
   return (
       <Overlay>
         <StyledModal ref={modalElementRef}>
-          <Button onClick={() => setShowForm(false)}>
-            <IoCloseSharp />  {/* icon*/}
-           </Button>
+          <div className='pb-7'>
+            <Button onClick={() => setShowForm(false)}>
+              <IoCloseSharp />  {/* icon*/}
+            </Button>
+          </div>
 
           <div>
             {children}

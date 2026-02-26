@@ -5,10 +5,7 @@ import DurationChart from './DurationChart';
 import TodayActivity from "./TodayActivity"
 
 const StyledDashboardLayout = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto 34rem auto;
-  gap: 2.4rem;
+
 `;
 
 export type BookingsAfterDateType = {
@@ -46,20 +43,26 @@ function DashboardLayout({ staysAfterDate, bookingsAfterDate, daysSelectedNumber
   return (
     <>
       <br />
-      <StyledDashboardLayout>
+      <StyledDashboardLayout className="grid grid-cols-1 xl:grid-cols-2 gap-4">
             
         {/* Top 4 tiles */}
-        <Stats 
-          bookingsAfterDate={bookingsAfterDate} 
-          staysAfterDate={staysAfterDate} 
-          daysSelectedNumber={daysSelectedNumber}
-          />
+        <div className="xl:col-span-2">
+          <Stats 
+            bookingsAfterDate={bookingsAfterDate} 
+            staysAfterDate={staysAfterDate} 
+            daysSelectedNumber={daysSelectedNumber}
+            />
+        </div>
 
-        {/* Todays bookings */}  
+
         <TodayActivity/>
-        
+        {/* Todays bookings */}  
         <DurationChart staysAfterDate={staysAfterDate} />
-        <SalesChart bookingsAfterDate={bookingsAfterDate} daysSelectedNumber={daysSelectedNumber}/>
+
+
+      <div className="xl:col-span-2">
+        <SalesChart  bookingsAfterDate={bookingsAfterDate} daysSelectedNumber={daysSelectedNumber}/>
+      </div>
       </StyledDashboardLayout>
     </>
   );

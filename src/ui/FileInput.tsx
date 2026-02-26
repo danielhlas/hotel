@@ -15,7 +15,7 @@ const FileInput = styled.input`
     background-color: var(--color-brand-600);
     cursor: pointer;
     transition: color 0.2s, background-color 0.2s;
-
+  
     &:hover {
       background-color: var(--color-brand-700);
     }

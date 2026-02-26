@@ -60,8 +60,6 @@ const GlobalStyles = createGlobalStyle`
 *::before,
 *::after {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 
   /* Creating animations for dark mode */
   transition: background-color 0.3s, border 0.3s;
@@ -103,10 +101,10 @@ input:disabled {
   color: var(--color-grey-500);
 }
 
-input:focus,
-button:focus,
-textarea:focus,
-select:focus {
+input:focus-visible,
+button:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: 2px solid var(--color-brand-600);
   outline-offset: -1px;
 }
@@ -146,3 +144,5 @@ img {
 `;
 
 export default GlobalStyles;
+
+

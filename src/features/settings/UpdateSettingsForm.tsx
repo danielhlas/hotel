@@ -1,12 +1,26 @@
 import { useSettings } from './useSettings';
 import { useEditSettings } from './useEditSettings';
 import Form from '../../ui/Form';
-import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
 import type { updateSettingProps } from '../../services/apiSettings';
+import styled, { css } from "styled-components";
+
+export const SettingsFormRow = styled.div`
+display: flex;
+flex-direction: column;
+align-items: start;
+justify-content: space-between;
+gap: 1rem; /* gap-4 */
+padding: 2rem 0rem;
+border-bottom: 1px solid #efefef;
+
+@media (min-width: 640px) {
+  flex-direction: row;
+  align-items: center;
+}
+`;
 
 function UpdateSettingsForm() {
-
   //read data from Supabase:
   const {isLoading, dataFromSettings:{
     minBookingLength, 
@@ -31,18 +45,26 @@ function UpdateSettingsForm() {
 
   return (
     <Form>
-      <FormRow label='Minimum nights/booking'>
+      <SettingsFormRow>
+        <label htmlFor="min-nights">Minimum nights/booking</label>
         <Input type='number' disabled={isUpdating} id='min-nights' defaultValue={minBookingLength} onBlur={e=>handleUpdateInput(e, "minBookingLength")}/>
-      </FormRow>
-      <FormRow label='Maximum nights/booking'>
+      </SettingsFormRow>
+
+      <SettingsFormRow>
+        <label htmlFor="max-nights">Maximum nights/booking</label>
         <Input type='number' disabled={isUpdating} id='max-nights' defaultValue={maxBookingLength}  onBlur={e=>handleUpdateInput(e, "maxBookingLength")}/>
-      </FormRow>
-      <FormRow label='Maximum guests/booking'>
+      </SettingsFormRow>
+
+      <SettingsFormRow>
+        <label htmlFor="max-guests">Maximum guests/booking</label>
         <Input type='number' disabled={isUpdating} id='max-guests' defaultValue={maxGuestsPerBooking} onBlur={e=>handleUpdateInput(e, "maxGuestsPerBooking")}/>
-      </FormRow>
-      <FormRow label='Breakfast price'>
+      </SettingsFormRow>
+
+      <SettingsFormRow>
+        <label htmlFor="breakfast-price">Breakfast price</label>
         <Input type='number'disabled={isUpdating}  id='breakfast-price' defaultValue={breakfastPrice} onBlur={e=>handleUpdateInput(e, "breakfastPrice")}/>
-      </FormRow>
+      </SettingsFormRow>
+      
     </Form>
   )
 }

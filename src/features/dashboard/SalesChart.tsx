@@ -14,7 +14,6 @@ import { subDays, eachDayOfInterval, format, isSameDay } from 'date-fns';
 import  {type BookingsAfterDateType} from "./DashboardLayout";
 
 const StyledSalesChart = styled(DashboardBox)`
-  grid-column: 1 / -1;
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: 0.8rem;
