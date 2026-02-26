@@ -11,12 +11,17 @@ import Textarea from "../../ui/Textarea";
 import { editCabin, type AddCabinInputType, type CabinType} from "../../services/apiCabins";
 
 const FormRow = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2.4rem;
-
-  padding: 1.2rem 0;
+    display: grid;
+    grid-template-columns: 18rem 1fr;
+    align-items: center;
+    column-gap: 2.4rem;
+    padding: 1.2rem 0;
+    
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr; /* label nad input */
+      align-items: start;
+      gap: 0.1rem;
+    }
 
   &:first-child {
     padding-top: 0;

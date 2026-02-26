@@ -11,16 +11,17 @@ import { addCabin, type AddCabinInputType, type CabinType  } from "../../service
 import toast from "react-hot-toast";
 
 const FormRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 18rem 1fr;
   align-items: center;
-  gap: 2.4rem;
+  column-gap: 2.4rem;
   padding: 1.2rem 0;
-
-  @media (min-width: 400px) {
-     flex-direction: row;
-   }
+  
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr; /* label nad input */
+    align-items: start;
+    gap: 0.1rem;
+  }
 
   &:first-child {
     padding-top: 0;
