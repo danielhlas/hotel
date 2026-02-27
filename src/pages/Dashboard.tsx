@@ -57,7 +57,7 @@ function Dashboard() {
 
   return (
     <>
-        <HeaderOfPage>
+        <HeaderOfPage marginBottom="mb-0">
           <Heading as="h1">Dashboard</Heading>
           <FilterDashboard />
         </HeaderOfPage>

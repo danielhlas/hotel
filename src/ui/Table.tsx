@@ -17,6 +17,7 @@ const StyledTable = styled.div`
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   border-radius: 7px;
+  text-align: center;
 `;
 
 const CommonRow = styled.header<{$columns: string}>`
@@ -34,8 +35,15 @@ const StyledHeader = styled(CommonRow)`
   border-bottom: 1px solid var(--color-grey-100);
   text-transform: uppercase;
   letter-spacing: 0.4px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--color-grey-600);
+  line-height: 1.3;
+
+  @media (min-width: 640px){
+    font-size: 14px;
+    line-height: 1.5;
+  }
 `;
 
 const StyledBody = styled.section`

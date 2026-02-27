@@ -7,6 +7,7 @@ import Pagination from '../../ui/Pagination';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from 'react-router-dom';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 function BookingTable() {
 
@@ -24,7 +25,12 @@ function BookingTable() {
   //PAGINATION
   const currentPage = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
 
-
+  const width = useWindowSize();
+  const tableColumns = width > 768 
+  ? "0.6fr 2fr 2.4fr 1.4fr 1fr" //5cols for big screen
+  : "minmax(0,1.5fr) minmax(0,2.4fr) minmax(0,0.8fr)";    //3cols for small screen
+  
+  
  //QUERY
   const {isLoading, data: {data: bookings, count} = {}, error} = useQuery({
     queryKey: ["bookings", filterValue, splittedSortValue, currentPage],
@@ -55,6 +61,8 @@ if(currentPage > 1){
 }
 
 
+
+
 if(isLoading) return <Spinner/>
 
 if (!bookings?.length) {
@@ -64,14 +72,21 @@ if (!bookings?.length) {
 
 return (
   <Menus>
-    <Table columns='0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem'>
+    <Table columns={tableColumns}>
       <Table.Header>
-        <div>Cabin</div>
-        <div>Guest</div>
+        <div className="hidden md:block">Cabin</div>
+        <div className="hidden md:block">Guest</div>
+        <div className="md:hidden">Cabin & Guest</div>
         <div>Dates</div>
-        <div>Status</div>
-        <div>Amount</div>
-        <div></div>
+        <div className="hidden md:block">Status</div>
+        <div className="hidden md:block">Price</div>
+        <div className="md:hidden">
+          <span className="flex flex-col items-center">
+            <span>Cabin</span>
+            <span>&amp; guest</span>
+          </span>
+        </div>
+
       </Table.Header>
 
 

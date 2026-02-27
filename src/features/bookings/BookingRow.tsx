@@ -8,17 +8,42 @@ import { formatCurrency } from '../../utils/helpers';
 import { formatDistanceFromNow } from '../../utils/helpers';
 import { format, isToday } from 'date-fns';
 
+
+const StatusPriceContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    display: contents;
+  }
+`;
+
 const Cabin = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
   font-family: 'Sono';
+  border: 1.5px solid #e2e1ff;
+  padding: 0.5px 8px;
+  margin-bottom: 3px;
+  font-size: 13px;
+  
+  @media (min-width: 768px){
+    margin-bottom: 0px;
+    font-size: 14px;
+  }
 `;
 
 const Stacked = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+  font-size: 12px;
+
+  @media (min-width: 768px){
+    font-size: 14px;
+  }
 
   & span:first-child {
     font-weight: 500;
@@ -67,7 +92,7 @@ function BookingRow({ booking } : BookingRowProps) {
   } = booking;
   const guestName = guests?.fullName ?? "Unknown guest";
   const email = guests?.email ?? "No email";
-  const cabinName = cabins?.name ?? "Unknown cabin";
+  const cabinName = cabins?.name ?? "-";
   //const { mutate: deleteBooking, isLoading: isDeleting } = useDeleteBooking();
 //const { mutate: checkout, isLoading: isCheckingOut } = useCheckout();
 
@@ -80,33 +105,39 @@ function BookingRow({ booking } : BookingRowProps) {
     'checked-out': 'silver',
   };
 
+  const finalSalesNum = String(formatCurrency(totalPrice)).replace(".00", "")
+
   return (
     <Table.Row>
-      <Cabin>{cabinName}</Cabin>
 
-      <Stacked>
-        <span>{guestName}</span>
-        <span>{email}</span>
-      </Stacked>
+      <StatusPriceContainer>
+        <Cabin>{cabinName}</Cabin>
+
+        <Stacked>
+          <span>{guestName}</span>
+          <span>{email}</span>
+        </Stacked>
+      </StatusPriceContainer> 
 
        <Stacked>
         <span>
-          {isToday(new Date(startDate))
-            ? 'Today'
-            : formatDistanceFromNow(startDate)}{' '}
-          &rarr; {numNights} night stay
+      {numNights} nights
+  
+
         </span>
         <span>
-          {format(new Date(startDate), 'MMM dd yyyy')} &mdash;{' '}
+          {format(new Date(startDate), 'MMM dd')} &mdash;{' '}
           {format(new Date(endDate), 'MMM dd yyyy')}
         </span>
       </Stacked>
 
-      <Tag $type={statusToTagName[status]}>
-        {status.replace('-', ' ')}
-      </Tag>
+      <StatusPriceContainer>
+        <Tag $type={statusToTagName[status]}>
+          {status.replace('-', ' ')}
+        </Tag>
 
-      <Amount>{formatCurrency(totalPrice)}</Amount>
+        <Amount>{finalSalesNum}</Amount>
+      </StatusPriceContainer> 
 
     </Table.Row>
   );

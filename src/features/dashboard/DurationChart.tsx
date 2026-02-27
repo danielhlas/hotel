@@ -3,6 +3,7 @@ import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recha
 import styled from 'styled-components';
 import Heading from '../../ui/Heading';
 import { type stayAfterDateType } from "./DashboardLayout"
+import { useWindowSize } from '@/hooks/useWindowSize';
 
 const ChartBox = styled.div`
   background-color: var(--color-grey-0);
@@ -14,7 +15,7 @@ const ChartBox = styled.div`
     font-weight: 600;
   }
 
-  /* A bit hack, but okay */
+  /* fix */
   & > *:first-child {
     margin-bottom: 1.6rem;
   }
@@ -116,19 +117,32 @@ function DurationChart({ staysAfterDate } : { staysAfterDate: stayAfterDateType[
 
   const data = prepareData(startDataLight, staysAfterDate)
 
+
+  const width = useWindowSize();
+  //<Legend> props
+  const bigScreen = width > 550
+  const finalHeight = bigScreen ? 240 : 285
+  const verticalAlign = bigScreen ? "middle" : "bottom" 
+  const layout = bigScreen ? "vertical" : "horizontal" 
+  const align = bigScreen ? "right" : "center" 
+  
+
   return (
     <ChartBox>
       <Heading as="h2">Stay duration summary</Heading>
 
       <div className="w-full lg:w-[45rem] xl:w-full justify-self-center ">
-        <ResponsiveContainer width="100%" height={240}>
+        <ResponsiveContainer width="100%" height={finalHeight}>
           <PieChart>
           <Pie data={data} nameKey="duration" dataKey="value" innerRadius={50} outerRadius={90}>
             {data.map((cur)=> 
             <Cell fill={cur.color} stroke={cur.color} key={cur.duration}/> )
             }
           </Pie>     
-          <Legend verticalAlign="middle" align="right" width={120} layout="vertical" iconSize={15} iconType="circle"  /> 
+          <Legend verticalAlign={verticalAlign} align={align}  layout={layout} iconSize={15} iconType="circle" formatter={(value) => <span style={{ marginRight: 6 }}>{value}</span>}   /> 
+         
+
+
           <Tooltip/>
         </PieChart>
         </ResponsiveContainer>
@@ -139,8 +153,6 @@ function DurationChart({ staysAfterDate } : { staysAfterDate: stayAfterDateType[
 }
 
 export default DurationChart;
-
-
 
 
 /*

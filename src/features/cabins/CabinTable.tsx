@@ -6,13 +6,19 @@ import CabinRow from "./CabinRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import Empty from "../../ui/Empty";
-
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 function CabinTable() {
   const {isLoading, data: cabins, error} = useQuery({
     queryKey: ["cabins"],
     queryFn: getCabins
   })
+
+  const width = useWindowSize();
+  const isBigScreen = width > 768;
+  const tableColumns = isBigScreen 
+  ? "0.6fr 1.8fr 2.2fr 1fr 1fr 1fr" //6cols for big screen
+  : "0.6fr 1fr 1.5fr 1fr 0.5fr";    //5cols for small screen
 
 
   //Filtering by discount
@@ -77,13 +83,14 @@ function CabinTable() {
   return (
     <div>
       <Menus>
-        <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+        <Table columns={tableColumns}>
           <Table.Header>
             <div></div>
             <div>Cabin</div>
             <div>Capacity</div>
-            <div>Price</div>
-            <div>Discount</div>
+            <div className="hidden md:block">Price</div>
+            <div className="hidden md:block">Discount</div>
+            <div className="md:hidden">Price & Discount</div>
           </Table.Header>
           <Table.Body>
             {sortedCabins?.map(cabin => (

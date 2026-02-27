@@ -10,11 +10,16 @@ const StyledPagination = styled.div`
 `;
 
 const P = styled.p`
-  font-size: 1.4rem;
-  margin-left: 0.8rem;
+  font-size: 1.2rem;
+  margin-left: 2rem;
 
   & span {
     font-weight: 600;
+  }
+
+  @media (min-width: 600px){
+    foont-size: 1.4rem;
+    margin-left: 1.2rem;
   }
 `;
 
@@ -83,16 +88,15 @@ function Pagination({ numberOfRows, numOfPages }: PaginationProps) {
   }
 
 
-
   return (
     <StyledPagination>
 
       <P>
-       {numberOfRows} bookings found
+       {numberOfRows} records
       </P>
     
       <P>
-        Page <span>{currentPage}</span> of <span> {numOfPages}</span>
+        Page <span>{currentPage}</span>/<span>{numOfPages}</span>
       </P>
   
 

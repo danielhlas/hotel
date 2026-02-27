@@ -5,7 +5,6 @@ import DurationChart from './DurationChart';
 import TodayActivity from "./TodayActivity"
 
 const StyledDashboardLayout = styled.div`
-
 `;
 
 export type BookingsAfterDateType = {
@@ -63,6 +62,7 @@ function DashboardLayout({ staysAfterDate, bookingsAfterDate, daysSelectedNumber
       <div className="xl:col-span-2">
         <SalesChart  bookingsAfterDate={bookingsAfterDate} daysSelectedNumber={daysSelectedNumber}/>
       </div>
+
       </StyledDashboardLayout>
     </>
   );

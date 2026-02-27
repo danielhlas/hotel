@@ -14,6 +14,16 @@ import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 
+const PriceDiscountContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  @media (min-width: 768px) {
+    display: contents;
+  }
+`;
+
 const Img = styled.img`
   display: block;
   width: 6.4rem;
@@ -39,6 +49,11 @@ const Discount = styled.div`
   font-family: "Sono";
   font-weight: 500;
   color: var(--color-green-700);
+  font-size: 13px;
+
+@media (min-width: 768px){
+  font-size: 14px;
+}
 `;
 
 export type CabinRowType = {
@@ -104,9 +119,11 @@ function CabinRow({ cabin } : { cabin: CabinRowType }) {
         <Cabin>{cabin.name}</Cabin>
         <div>For {cabin.maxCapacity} guests</div>
 
-        <Price>{formatCurrency(cabin.regularPrice)}</Price>
-        {cabin.discount ? <Discount>{cabin.discount}% off</Discount> : "-"}
-      
+        <PriceDiscountContainer>
+          <Price>{formatCurrency(cabin.regularPrice)}</Price>
+          {cabin.discount ? <Discount>{cabin.discount}% off</Discount> : "-"}
+        </PriceDiscountContainer>
+        
         <span>      
           {/* Toggle menu with actions buttons */}
           <Menus.Menu>
