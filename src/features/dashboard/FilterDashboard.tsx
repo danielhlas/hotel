@@ -24,7 +24,7 @@ const FilterButton = styled.button<{ $active?: boolean }>`
 
   border-radius: var(--border-radius-sm);
   font-weight: 500;
-  font-size: clamp(1.25rem, 0.2vw + 1.2rem, 1.4rem);
+  font-size: clamp(1.32rem, 0.1vw + 1.3rem, 1.4rem);
 
   /* To give the same height as select */
   padding: 0.44rem 0.8rem;

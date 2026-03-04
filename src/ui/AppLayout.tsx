@@ -27,7 +27,6 @@ const Div = styled.div`
   margin: 0 grid-auto-flow;
   display: flex;
   flex-direction: column;
-  gap:3;
 `;
 
 

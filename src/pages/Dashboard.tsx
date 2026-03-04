@@ -26,9 +26,8 @@ function Dashboard() {
     queryKey: ["StaysAfterDate", daysSelectedNumber],
     queryFn: () => getStaysAfterDate(queryDate)
   })
-  
 
-  
+
 
   //if not enough data, upload new bookings to database and refetch:
   useEffect(function () {
@@ -57,10 +56,10 @@ function Dashboard() {
 
   return (
     <>
-        <HeaderOfPage marginBottom="mb-0">
-          <Heading as="h1">Dashboard</Heading>
-          <FilterDashboard />
-        </HeaderOfPage>
+      <HeaderOfPage marginBottom="mb-0">
+        <Heading as="h1">Dashboard</Heading>
+        <FilterDashboard />
+      </HeaderOfPage>
 
       <DashboardLayout staysAfterDate={staysAfterDate} bookingsAfterDate={bookingsAfterDate} daysSelectedNumber={daysSelectedNumber} />
     </>

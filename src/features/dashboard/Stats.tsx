@@ -47,7 +47,7 @@ const Title = styled.h5`
 `;
 
 const Value = styled.p`
-  font-size: clamp(2rem, 0.6vw + 1.9rem, 2.4rem);
+font-size: clamp(2rem, 0.6vw + 1.9rem, 2.4rem);
   line-height: 1;
   font-weight: 500;
   /* color: var(--color-grey-600); */

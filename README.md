@@ -2,7 +2,7 @@
 - React, Typescript, Styled Components, Tanstack Query, React Hook Form, Toasts notifications
 - Live: https://react-hotel-cz.netlify.app/
 - Data stored on the server (Supabase)
-- Fully responsive with adaptive tables
+- Fluid-Responsive Design with Stackable Table Layout
 
 ## Dashboard
 - Todays activities
