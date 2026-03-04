@@ -1,4 +1,4 @@
-import {type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { IoCloseSharp } from "react-icons/io5";
 import styled from "styled-components";
 import { useCloseModalOnClickOutside } from "../hooks/useCloseModalOnClickOutside";
@@ -11,8 +11,12 @@ const StyledModal = styled.div`
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
-  padding: 3.2rem 4rem;
+  padding: clamp(2.5rem, 3.5rem, 4rem) clamp(0.8rem, 3rem, 4rem);
   transition: all 0.5s;
+  
+  max-width: 90vw;
+  max-height: 82vh;
+  overflow-y: auto;
 `;
 
 const Overlay = styled.div`
@@ -57,27 +61,27 @@ type ModalProps = {
   children: ReactNode;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function Modal({children, setShowForm}: ModalProps) {
+function Modal({ children, setShowForm }: ModalProps) {
 
 
- const { modalElementRef } = useCloseModalOnClickOutside(() => setShowForm(false));
+  const { modalElementRef } = useCloseModalOnClickOutside(() => setShowForm(false));
 
 
   return (
-      <Overlay>
-        <StyledModal ref={modalElementRef}>
-          <div className='pb-7'>
-            <Button onClick={() => setShowForm(false)}>
-              <IoCloseSharp />  {/* icon*/}
-            </Button>
-          </div>
+    <Overlay>
+      <StyledModal ref={modalElementRef}>
+        <div className='pb-7'>
+          <Button onClick={() => setShowForm(false)}>
+            <IoCloseSharp />  {/* icon*/}
+          </Button>
+        </div>
 
-          <div>
-            {children}
-          </div>
-          
-        </StyledModal>
-      </Overlay>
+        <div>
+          {children}
+        </div>
+
+      </StyledModal>
+    </Overlay>
   )
 }
 

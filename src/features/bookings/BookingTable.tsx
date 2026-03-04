@@ -19,88 +19,90 @@ function BookingTable() {
   //SORTING
   const sortValue = searchParams.get("sort") || "startDate-desc";
   const [field, direction] = sortValue.split("-");
-  const splittedSortValue = {field, direction};
+  const splittedSortValue = { field, direction };
 
-  
+
   //PAGINATION
   const currentPage = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
 
   const width = useWindowSize();
-  const tableColumns = width > 768 
-  ? "0.6fr 2fr 2.4fr 1.4fr 1fr" //5cols for big screen
-  : "minmax(0,1.5fr) minmax(0,2.4fr) minmax(0,0.8fr)";    //3cols for small screen
-  
-  
- //QUERY
-  const {isLoading, data: {data: bookings, count} = {}, error} = useQuery({
+  const tableColumns = width >= 768
+    ? "0.6fr 2fr 2.4fr 1.4fr 1fr" //5cols for big screen
+    : "minmax(0,1.5fr) minmax(0,2.5fr) minmax(0,1.5fr)";    //3cols for small screen
+
+
+  //QUERY
+  const { isLoading, data: { data: bookings, count } = {}, error } = useQuery({
     queryKey: ["bookings", filterValue, splittedSortValue, currentPage],
-    queryFn: () => getBookings({filterValue, splittedSortValue, currentPage}),
+    queryFn: () => getBookings({ filterValue, splittedSortValue, currentPage }),
   })
 
 
 
-//PRE-FETCHING
-const queryClient = useQueryClient();
-if (typeof count !== "number") return
-  const numOfPages = Math.ceil(count/10);
+  //PRE-FETCHING
+  const queryClient = useQueryClient();
+  if (typeof count !== "number") return
+  const numOfPages = Math.ceil(count / 10);
 
 
-if(currentPage < numOfPages){
-  queryClient.prefetchQuery({
-    queryKey: ["bookings", filterValue, splittedSortValue, currentPage+1],
-    queryFn: () => getBookings({filterValue, splittedSortValue, currentPage: currentPage+1}),
-  })
-}
+  if (currentPage < numOfPages) {
+    queryClient.prefetchQuery({
+      queryKey: ["bookings", filterValue, splittedSortValue, currentPage + 1],
+      queryFn: () => getBookings({ filterValue, splittedSortValue, currentPage: currentPage + 1 }),
+    })
+  }
 
 
-if(currentPage > 1){
-  queryClient.prefetchQuery({
-    queryKey: ["bookings", filterValue, splittedSortValue, currentPage-1],
-    queryFn: () => getBookings({filterValue, splittedSortValue, currentPage: currentPage-1}),
-  })
-}
+  if (currentPage > 1) {
+    queryClient.prefetchQuery({
+      queryKey: ["bookings", filterValue, splittedSortValue, currentPage - 1],
+      queryFn: () => getBookings({ filterValue, splittedSortValue, currentPage: currentPage - 1 }),
+    })
+  }
 
 
 
 
-if(isLoading) return <Spinner/>
+  if (isLoading) return <Spinner />
 
-if (!bookings?.length) {
-  return <Empty resource="bookings" />
-}
-
-
-return (
-  <Menus>
-    <Table columns={tableColumns}>
-      <Table.Header>
-        <div className="hidden md:block">Cabin</div>
-        <div className="hidden md:block">Guest</div>
-        <div className="md:hidden">Cabin & Guest</div>
-        <div>Dates</div>
-        <div className="hidden md:block">Status</div>
-        <div className="hidden md:block">Price</div>
-        <div className="md:hidden">
-          <span className="flex flex-col items-center">
-            <span>Cabin</span>
-            <span>&amp; guest</span>
-          </span>
-        </div>
-
-      </Table.Header>
+  if (!bookings?.length) {
+    return <Empty resource="bookings" />
+  }
 
 
-      {bookings.map((booking) => (
+  return (
+    <Menus>
+      <Table columns={tableColumns}>
+        <Table.Header>
+          <div className="hidden md:block">Cabin</div>
+          <div className="hidden md:block">Guest</div>
+          <div className="md:hidden">Cabin & Guest</div>
+
+          <div>Dates</div>
+
+          <div className="hidden md:block">Status</div>
+          <div className="hidden md:block">Price</div>
+          <div className="md:hidden">
+            <span className="flex flex-col items-center">
+              <span>Cabin</span>
+              <span>&amp; guest</span>
+            </span>
+          </div>
+
+        </Table.Header>
+
+
+        {bookings.map((booking) => (
           <BookingRow key={booking.id} booking={booking} />
-      ))} 
+        ))}
 
-        
+
         <Table.Footer>
           <Pagination numberOfRows={count} numOfPages={numOfPages} />
         </Table.Footer>
-    </Table>
-  </Menus>
-);
+      </Table>
+    </Menus>
+  );
 }
 
 export default BookingTable;

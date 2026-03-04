@@ -101,7 +101,7 @@ async function createBookings() {
 export async function uploadBookings() {
   await deleteBookings();
   await createBookings();
-  toast.success('New bookings uploaded! Reload the page!')
+  toast.success('New bookings uploaded!')
 }
 
 

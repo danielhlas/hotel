@@ -10,16 +10,16 @@ const StyledPagination = styled.div`
 `;
 
 const P = styled.p`
-  font-size: 1.2rem;
-  margin-left: 2rem;
+  font-size: 1.1rem;
+  margin-left: 1rem;
 
   & span {
     font-weight: 600;
   }
 
   @media (min-width: 600px){
-    foont-size: 1.4rem;
-    margin-left: 1.2rem;
+    foot-size: 1.4rem;
+    margin-left: 1.4rem;
   }
 `;
 
@@ -66,11 +66,11 @@ const PaginationButton = styled.button<{ active?: boolean }>`
 
 type PaginationProps = {
   numberOfRows: number | null | undefined;
-  numOfPages: number;  
+  numOfPages: number;
 }
 
 function Pagination({ numberOfRows, numOfPages }: PaginationProps) {
-  
+
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
 
@@ -92,27 +92,27 @@ function Pagination({ numberOfRows, numOfPages }: PaginationProps) {
     <StyledPagination>
 
       <P>
-       {numberOfRows} records
+        {numberOfRows} records
       </P>
-    
+
       <P>
         Page <span>{currentPage}</span>/<span>{numOfPages}</span>
       </P>
-  
 
-    <Buttons>
-      <PaginationButton onClick={previousPage} disabled={currentPage === 1}>
-        <HiChevronLeft/>
-        <span>Previous</span>
-      </PaginationButton>
 
-      <PaginationButton onClick={nextPage} disabled={currentPage === numOfPages}>
-        <span>Next</span>
-        <HiChevronRight/>
-      </PaginationButton>
-    </Buttons>
+      <Buttons>
+        <PaginationButton onClick={previousPage} disabled={currentPage === 1}>
+          <HiChevronLeft />
+          <span>Previous</span>
+        </PaginationButton>
 
-  </StyledPagination>
+        <PaginationButton onClick={nextPage} disabled={currentPage === numOfPages}>
+          <span>Next</span>
+          <HiChevronRight />
+        </PaginationButton>
+      </Buttons>
+
+    </StyledPagination>
 
   )
 }

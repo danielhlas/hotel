@@ -7,18 +7,27 @@ import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import Empty from "../../ui/Empty";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { IMG_HIDE_VALUE } from "../../utils/constants";
+
 
 function CabinTable() {
-  const {isLoading, data: cabins, error} = useQuery({
+  const { isLoading, data: cabins, error } = useQuery({
     queryKey: ["cabins"],
     queryFn: getCabins
   })
 
   const width = useWindowSize();
-  const isBigScreen = width > 768;
-  const tableColumns = isBigScreen 
-  ? "0.6fr 1.8fr 2.2fr 1fr 1fr 1fr" //6cols for big screen
-  : "0.6fr 1fr 1.5fr 1fr 0.5fr";    //5cols for small screen
+  //4cols for smallest screen. img is hidden
+  let tableColumns = "0.6fr 1.5fr 2fr 1px";
+
+  if (width >= 640) {
+    //6cols for medium/big screen
+    tableColumns = "0.8fr 1fr 2fr 1fr 2fr 1px"
+  }
+  else if (width >= 480) {
+    //5cols for small screen
+    tableColumns = "1fr 0.6fr 1.5fr 1.3fr 1px";    //
+  }
 
 
   //Filtering by discount
@@ -26,12 +35,12 @@ function CabinTable() {
   const filterValue = searchParams.get("discount") || "all";
 
 
-  if(isLoading) return <Spinner/>
-  
-  if(!cabins?.length) {
+  if (isLoading) return <Spinner />
+
+  if (!cabins?.length) {
     return <Empty resource="cabins" />
   }
-  
+
 
   //1. Filtering
   let filteredCabins;
@@ -45,7 +54,7 @@ function CabinTable() {
     filteredCabins = cabins.filter(cabin => cabin.discount > 0);
   }
 
-  
+
   //2. Sorting (after filtering, so we sort only the filtered items)
   const sortValue = searchParams.get("sort") || "name-asc";
 
@@ -73,9 +82,9 @@ function CabinTable() {
     }
     return 0;
   }
- 
+
   const sortedCabins =
-      field === "name"
+    field === "name"
       ? filteredCabins?.sort(compare)
       : filteredCabins?.sort((a, b) => (a[field] - b[field]) * modifier);
 
@@ -85,21 +94,21 @@ function CabinTable() {
       <Menus>
         <Table columns={tableColumns}>
           <Table.Header>
-            <div></div>
+            <div className="hidden xxs:block"></div>
             <div>Cabin</div>
             <div>Capacity</div>
-            <div className="hidden md:block">Price</div>
-            <div className="hidden md:block">Discount</div>
-            <div className="md:hidden">Price & Discount</div>
+            <div className="hidden sm:block">Price</div>
+            <div className="hidden sm:block">Discount</div>
+            <div className="sm:hidden ">Price & Discount</div>
+            <div></div> {/* empty space for the menu toggle button */}
           </Table.Header>
           <Table.Body>
             {sortedCabins?.map(cabin => (
-              <CabinRow key={cabin.id} cabin={cabin}/>
+              <CabinRow key={cabin.id} cabin={cabin} />
             ))}
           </Table.Body>
         </Table>
       </Menus>
-
     </div>
   )
 }

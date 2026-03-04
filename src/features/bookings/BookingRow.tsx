@@ -7,7 +7,7 @@ import Table from '../../ui/Table';
 import { formatCurrency } from '../../utils/helpers';
 import { formatDistanceFromNow } from '../../utils/helpers';
 import { format, isToday } from 'date-fns';
-
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 const StatusPriceContainer = styled.div`
   display: flex;
@@ -76,8 +76,8 @@ type BookingRowProps = {
   }
 }
 
-function BookingRow({ booking } : BookingRowProps) {
-  if (booking === null)  throw new Error("booking se nenačetl")
+function BookingRow({ booking }: BookingRowProps) {
+  if (booking === null) throw new Error("booking se nenačetl")
   const {
     id: bookingId,
     created_at,
@@ -94,12 +94,12 @@ function BookingRow({ booking } : BookingRowProps) {
   const email = guests?.email ?? "No email";
   const cabinName = cabins?.name ?? "-";
   //const { mutate: deleteBooking, isLoading: isDeleting } = useDeleteBooking();
-//const { mutate: checkout, isLoading: isCheckingOut } = useCheckout();
+  //const { mutate: checkout, isLoading: isCheckingOut } = useCheckout();
 
   const navigate = useNavigate();
 
-  const statusToTagName: Record< "unconfirmed" | "checked-in" | "checked-out",
-  "blue" | "green" | "silver">  = {
+  const statusToTagName: Record<"unconfirmed" | "checked-in" | "checked-out",
+    "blue" | "green" | "silver"> = {
     unconfirmed: 'blue',
     'checked-in': 'green',
     'checked-out': 'silver',
@@ -114,20 +114,23 @@ function BookingRow({ booking } : BookingRowProps) {
         <Cabin>{cabinName}</Cabin>
 
         <Stacked>
-          <span>{guestName}</span>
-          <span>{email}</span>
+          <span className="px-3 sm:px-0">{guestName}</span>
+          <Tooltip>
+            <TooltipTrigger className="text-ellipsis overflow-hidden text-nowrap w-[80%] sm:w-[100%] mx-auto">{email}</TooltipTrigger>
+            <TooltipContent>
+              <p className='text-xl'>{email}</p>
+            </TooltipContent>
+          </Tooltip>
         </Stacked>
-      </StatusPriceContainer> 
+      </StatusPriceContainer>
 
-       <Stacked>
+      <Stacked>
         <span>
-      {numNights} nights
-  
-
+          {numNights} nights
         </span>
         <span>
           {format(new Date(startDate), 'MMM dd')} &mdash;{' '}
-          {format(new Date(endDate), 'MMM dd yyyy')}
+          <p>{format(new Date(endDate), 'MMM dd yyyy')}</p>
         </span>
       </Stacked>
 
@@ -137,7 +140,7 @@ function BookingRow({ booking } : BookingRowProps) {
         </Tag>
 
         <Amount>{finalSalesNum}</Amount>
-      </StatusPriceContainer> 
+      </StatusPriceContainer>
 
     </Table.Row>
   );

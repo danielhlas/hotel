@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-const Form = styled.form<{type?: string}>`
+const Form = styled.form<{ type?: string }>`
   ${(props) =>
     props.type === "regular" &&
     css`
@@ -15,10 +15,8 @@ const Form = styled.form<{type?: string}>`
   ${(props) =>
     props.type === "modal" &&
     css`
-      width: 75vw;
-      @media (min-width: 800px){
       width: 70rem;
-    }
+      max-width: 100%;
     `}
     
   overflow: hidden;

@@ -47,7 +47,7 @@ const Title = styled.h5`
 `;
 
 const Value = styled.p`
-  font-size: 2.4rem;
+  font-size: clamp(2rem, 0.6vw + 1.9rem, 2.4rem);
   line-height: 1;
   font-weight: 500;
   /* color: var(--color-grey-600); */
@@ -60,10 +60,10 @@ type StatsProps = {
   daysSelectedNumber: number;
 }
 function Stats({ bookingsAfterDate, staysAfterDate, daysSelectedNumber }: StatsProps) {
-    const {isLoading, data: cabins, error} = useQuery({
-      queryKey: ["cabins"],
-      queryFn: () => getCabins()
-    })
+  const { isLoading, data: cabins, error } = useQuery({
+    queryKey: ["cabins"],
+    queryFn: () => getCabins()
+  })
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -79,31 +79,31 @@ function Stats({ bookingsAfterDate, staysAfterDate, daysSelectedNumber }: StatsP
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4'>
 
-    <StyledStat>
-      <Icon color="blue"><HiOutlineBriefcase/></Icon>
-      <Title>Bookings</Title>
-      <Value>{numOfBookings}</Value>
-    </StyledStat>
+      <StyledStat>
+        <Icon color="blue"><HiOutlineBriefcase /></Icon>
+        <Title>Bookings</Title>
+        <Value>{numOfBookings}</Value>
+      </StyledStat>
 
-    <StyledStat>
-      <Icon color="green"><HiOutlineBanknotes/></Icon>
-      <Title>Sales</Title>
-      <Value>{finalSalesNum}</Value>
-    </StyledStat>
+      <StyledStat>
+        <Icon color="green"><HiOutlineBanknotes /></Icon>
+        <Title>Sales</Title>
+        <Value>{finalSalesNum}</Value>
+      </StyledStat>
 
-    <StyledStat>
-      <Icon color="indigo"><HiOutlineCalendarDays/></Icon>
-      <Title>Check ins</Title>
-      <Value>{confirmedCheckIns}</Value>
-    </StyledStat>
+      <StyledStat>
+        <Icon color="indigo"><HiOutlineCalendarDays /></Icon>
+        <Title>Check ins</Title>
+        <Value>{confirmedCheckIns}</Value>
+      </StyledStat>
 
-    <StyledStat>
-      <Icon color="yellow"><HiOutlineChartBar/></Icon>
-      <Title>Occupancy rate</Title>
-      <Value>{Math.round(occupancyRate)}%</Value>
-    </StyledStat>
+      <StyledStat>
+        <Icon color="yellow"><HiOutlineChartBar /></Icon>
+        <Title>Occupancy rate</Title>
+        <Value>{Math.round(occupancyRate)}%</Value>
+      </StyledStat>
 
-   </div>
+    </div>
   );
 }
 

@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 const StyledSelect = styled.select<{ type?: "white" }>`
-  font-size: 1.4rem;
+  font-size: clamp(1.25rem, 0.2vw + 1.2rem, 1.4rem);
   padding: 0.8rem 1.2rem;
   border: 1px solid
     ${(props) =>
-      props.type === "white"
-        ? "var(--color-grey-100)"
-        : "var(--color-grey-300)"};
+    props.type === "white"
+      ? "var(--color-grey-100)"
+      : "var(--color-grey-300)"};
   border-radius: var(--border-radius-sm);
   background-color: var(--color-grey-0);
   font-weight: 500;
@@ -16,7 +16,7 @@ const StyledSelect = styled.select<{ type?: "white" }>`
 
 
 type SelectType = {
-  options:  {
+  options: {
     value: string;
     label: string;
   }[];
@@ -25,7 +25,7 @@ type SelectType = {
   type?: "white";
 }
 
-function Select({options, value, onChange, ...style}: SelectType) {
+function Select({ options, value, onChange, ...style }: SelectType) {
   return (
     <StyledSelect value={value} onChange={onChange} {...style}>
       {options.map(option => (<option value={option.value} key={option.value}> {option.label} </option>))}

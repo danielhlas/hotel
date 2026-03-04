@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 const StyledToday = styled.div`
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
-  border-radius: 0.8rem;  padding: 3.2rem;
+  border-radius: 0.8rem;  padding: 2.4rem;
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
@@ -50,7 +50,7 @@ function TodayActivity() {
   const safeData = data ?? [];
   //if not enough data:
   useEffect(function () {
-    
+
     if (!isLoading && safeData.length < 2) {
       uploadBookings().then(() => {
         queryClient.invalidateQueries({ queryKey: ["TodayActivity"], refetchType: 'active' })
@@ -61,8 +61,8 @@ function TodayActivity() {
 
 
   if (isLoading) return
-  
- 
+
+
 
   return (
     <StyledToday>

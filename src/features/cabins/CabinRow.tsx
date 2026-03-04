@@ -13,24 +13,30 @@ import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import { IMG_HIDE_VALUE } from "../../utils/constants";
+
+
 
 const PriceDiscountContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
 
-  @media (min-width: 768px) {
+  @media (min-width: 640px) {
     display: contents;
   }
 `;
 
 const Img = styled.img`
-  display: block;
+  display: none;
   width: 6.4rem;
   aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
-  transform: scale(1.5) translateX(-7px);
+
+  @media (min-width: ${IMG_HIDE_VALUE}px){
+    display: block;
+  }
 `;
 
 const Cabin = styled.div`
@@ -67,55 +73,56 @@ export type CabinRowType = {
   regularPrice: number;
 }
 
-function CabinRow({ cabin } : { cabin: CabinRowType }) {
+function CabinRow({ cabin }: { cabin: CabinRowType }) {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const queryClient = useQueryClient();
-	
+
   //Mazání řádku/případu ze Supabase tabulky:
-	const {isLoading, mutate} = useMutation({
-		mutationFn: (cabin: CabinRowType) => deleteCabin(cabin), 
-		onSuccess: () => {
+  const { isLoading, mutate } = useMutation({
+    mutationFn: (cabin: CabinRowType) => deleteCabin(cabin),
+    onSuccess: () => {
       toast.success("Cabin successfully deleted");
-			queryClient.invalidateQueries({
-				queryKey: ["cabins"]
-			})
-		},
-		onError: (err) => {
-      if (err instanceof Error){
+      queryClient.invalidateQueries({
+        queryKey: ["cabins"]
+      })
+    },
+    onError: (err) => {
+      if (err instanceof Error) {
         alert(err.message)
       }
     }
-	})
+  })
 
   //Duplikace řádku
-  const {mutate: duplicateCabin, isLoading: isDuplicatingCabin} = useMutation({
-		mutationFn: (cabin: CabinRowType) => addCabin({
-      name: `Copy of ${cabin.name}`, 
-      maxCapacity: cabin.maxCapacity, 
+  const { mutate: duplicateCabin, isLoading: isDuplicatingCabin } = useMutation({
+    mutationFn: (cabin: CabinRowType) => addCabin({
+      name: `Copy of ${cabin.name}`,
+      maxCapacity: cabin.maxCapacity,
       regularPrice: cabin.regularPrice,
       discount: cabin.discount,
       image: cabin.image,
-      description: cabin. description,
-     }),
+      description: cabin.description,
+    }),
 
-		onSuccess: () => {
-			toast.success("New cabin successfully added")
-			queryClient.invalidateQueries({queryKey: ["cabins"]});
-		},
+    onSuccess: () => {
+      toast.success("New cabin successfully added")
+      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+    },
     onError: (err) => {
-      if (err instanceof Error){
+      if (err instanceof Error) {
         alert(err.message)
       }
     }
-	})
+  })
 
 
   return (
     <>
       <Table.Row>
-        <Img src={cabin.image} alt={cabin.name}/>
+        <Img src={cabin.image} alt={cabin.name} />
+
         <Cabin>{cabin.name}</Cabin>
         <div>For {cabin.maxCapacity} guests</div>
 
@@ -123,26 +130,26 @@ function CabinRow({ cabin } : { cabin: CabinRowType }) {
           <Price>{formatCurrency(cabin.regularPrice)}</Price>
           {cabin.discount ? <Discount>{cabin.discount}% off</Discount> : "-"}
         </PriceDiscountContainer>
-        
-        <span>      
+
+        <span>
           {/* Toggle menu with actions buttons */}
           <Menus.Menu>
-            <Menus.Toggle id={cabin.id}/>
+            <Menus.Toggle id={cabin.id} />
             <Menus.List id={cabin.id}>
-              <Menus.Button icon={<IoDuplicateSharp/>} selectedBtnFunction={()=>duplicateCabin(cabin)}>Duplicate</Menus.Button>
-              <Menus.Button icon={<FaEdit/>} selectedBtnFunction={() => setShowEditForm((showForm) => !showForm)}>Edit</Menus.Button>
-              <Menus.Button icon={<MdDeleteForever/>} selectedBtnFunction={() => setShowDeleteConfirmation((showDeleteConfirmation) => !showDeleteConfirmation)}>Delete</Menus.Button>
+              <Menus.Button icon={<IoDuplicateSharp />} selectedBtnFunction={() => duplicateCabin(cabin)}>Duplicate</Menus.Button>
+              <Menus.Button icon={<FaEdit />} selectedBtnFunction={() => setShowEditForm((showForm) => !showForm)}>Edit</Menus.Button>
+              <Menus.Button icon={<MdDeleteForever />} selectedBtnFunction={() => setShowDeleteConfirmation((showDeleteConfirmation) => !showDeleteConfirmation)}>Delete</Menus.Button>
             </Menus.List>
           </Menus.Menu>
         </span>
-        
+
       </Table.Row>
-    
+
 
 
       {showEditForm && (
         <Modal setShowForm={setShowEditForm}>
-          <EditCabinForm cabinToEdit={cabin} setShowEditForm={setShowEditForm}/>
+          <EditCabinForm cabinToEdit={cabin} setShowEditForm={setShowEditForm} />
         </Modal>
       )}
 

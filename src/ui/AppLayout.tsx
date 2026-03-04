@@ -13,24 +13,14 @@ const StyledAppLayout = styled.div`
 
 const Main = styled.main`
   background-color: var(--color-grey-50);
-  padding: 4rem 0.6rem 6.4rem;
+  padding: 4rem clamp(1.125rem, 0.05rem + 2vw, 3.75rem) 6.4rem;
   overflow: scroll;
   overflow: -moz-hidden-none;
   -ms-overflow-style: none;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  @media (min-width: 450px) {
-    padding: 4rem 1.3rem 6.4rem;
-
-  }
-
-  @media (min-width: 768px) {
-    padding: 4rem 4.8rem 6.4rem;
-  }
-`;
+  }`;
 
 const Div = styled.div`
   max-width: 135rem;

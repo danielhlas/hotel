@@ -25,7 +25,8 @@ const FilterButton = styled.button<{ $active?: boolean }>`
 
   border-radius: var(--border-radius-sm);
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: clamp(1.25rem, 0.2vw + 1.2rem, 1.4rem);
+
   /* make same height as select */
   padding: 0.44rem 0.8rem;
   transition: all 0.3s;
@@ -40,8 +41,8 @@ const FilterButton = styled.button<{ $active?: boolean }>`
 function FilterBookings() {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  function handleFilter(value: string){
-    if(value === "all") {
+  function handleFilter(value: string) {
+    if (value === "all") {
       searchParams.delete("status");
       setSearchParams(searchParams);
       return
@@ -51,40 +52,40 @@ function FilterBookings() {
     searchParams.set("page", String(1));
     setSearchParams(searchParams);
 
-    
+
   }
 
- const filterValue = searchParams.get("status") || "all";
+  const filterValue = searchParams.get("status") || "all";
 
   return (
     <StyledFilterDiv>
 
-      <FilterButton 
-        $active={filterValue === "all"} 
-        disabled={filterValue === "all"} 
-        onClick={()=>{handleFilter("all")}}>
-          All
+      <FilterButton
+        $active={filterValue === "all"}
+        disabled={filterValue === "all"}
+        onClick={() => { handleFilter("all") }}>
+        All
       </FilterButton>
 
-      <FilterButton 
-        $active={filterValue === "checked-in"} 
-        disabled={filterValue === "checked-in"} 
-        onClick={()=>{handleFilter("checked-in")}}>
-          Checked in
+      <FilterButton
+        $active={filterValue === "checked-in"}
+        disabled={filterValue === "checked-in"}
+        onClick={() => { handleFilter("checked-in") }}>
+        Checked in
       </FilterButton>
 
-      <FilterButton 
-        $active={filterValue === "checked-out"} 
-        disabled={filterValue === "checked-out"} 
-        onClick={()=>{handleFilter("checked-out")}}>
-          Checked out
+      <FilterButton
+        $active={filterValue === "checked-out"}
+        disabled={filterValue === "checked-out"}
+        onClick={() => { handleFilter("checked-out") }}>
+        Checked out
       </FilterButton>
 
-      <FilterButton 
-        $active={filterValue === "unconfirmed"} 
-        disabled={filterValue === "unconfirmed"} 
-        onClick={()=>{handleFilter("unconfirmed")}}>
-          Unconfirmed
+      <FilterButton
+        $active={filterValue === "unconfirmed"}
+        disabled={filterValue === "unconfirmed"}
+        onClick={() => { handleFilter("unconfirmed") }}>
+        Unconfirmed
       </FilterButton>
 
     </StyledFilterDiv>
