@@ -65,7 +65,7 @@ const startDataLight = [
   },
 ];
 
-type startDataLightType =  {
+type startDataLightType = {
   duration: string,
   value: number,
   color: string,
@@ -77,7 +77,7 @@ function prepareData(startDataLight: startDataLightType, stays: stayAfterDateTyp
     duration: string;
     value: number;
   };
-  
+
   type ChartItem = {
     duration: string;
     value: number;
@@ -110,10 +110,7 @@ function prepareData(startDataLight: startDataLightType, stays: stayAfterDateTyp
 
 
 
-function DurationChart({ staysAfterDate } : { staysAfterDate: stayAfterDateType[] }) {
-
-  //const { isDarkMode } = useDarkMode();
-  //const startData = isDarkMode ? startDataDark : startDataLight;
+function DurationChart({ staysAfterDate }: { staysAfterDate: stayAfterDateType[] }) {
 
   const data = prepareData(startDataLight, staysAfterDate)
 
@@ -122,10 +119,10 @@ function DurationChart({ staysAfterDate } : { staysAfterDate: stayAfterDateType[
   //<Legend> props
   const bigScreen = width > 550
   const finalHeight = bigScreen ? 240 : 285
-  const verticalAlign = bigScreen ? "middle" : "bottom" 
-  const layout = bigScreen ? "vertical" : "horizontal" 
-  const align = bigScreen ? "right" : "center" 
-  
+  const verticalAlign = bigScreen ? "middle" : "bottom"
+  const layout = bigScreen ? "vertical" : "horizontal"
+  const align = bigScreen ? "right" : "center"
+
 
   return (
     <ChartBox>
@@ -134,17 +131,19 @@ function DurationChart({ staysAfterDate } : { staysAfterDate: stayAfterDateType[
       <div className="w-full lg:w-[45rem] xl:w-full justify-self-center ">
         <ResponsiveContainer width="100%" height={finalHeight}>
           <PieChart>
-          <Pie data={data} nameKey="duration" dataKey="value" innerRadius={50} outerRadius={90}>
-            {data.map((cur)=> 
-            <Cell fill={cur.color} stroke={cur.color} key={cur.duration}/> )
-            }
-          </Pie>     
-          <Legend verticalAlign={verticalAlign} align={align}  layout={layout} iconSize={15} iconType="circle" formatter={(value) => <span style={{ marginRight: 6 }}>{value}</span>}   /> 
-         
+            <Pie data={data} nameKey="duration" dataKey="value" innerRadius={50} outerRadius={90}>
+              {data.map((cur) =>
+                <Cell fill={cur.color} stroke={cur.color} key={cur.duration} />)
+              }
+            </Pie>
+            <Legend verticalAlign={verticalAlign} align={align} layout={layout} iconSize={15} iconType="circle" wrapperStyle={bigScreen ? {} : { paddingTop: "20px" }} formatter={
+              (value) => <span style={{ paddingLeft: 6 }}>{value}</span>
+            } />
 
 
-          <Tooltip/>
-        </PieChart>
+
+            <Tooltip />
+          </PieChart>
         </ResponsiveContainer>
       </div>
 

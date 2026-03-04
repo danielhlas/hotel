@@ -5,9 +5,8 @@ import Tag from '../../ui/Tag';
 import Table from '../../ui/Table';
 
 import { formatCurrency } from '../../utils/helpers';
-import { formatDistanceFromNow } from '../../utils/helpers';
 import { format, isToday } from 'date-fns';
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from "../../ui/shadcn/popover"
 
 const StatusPriceContainer = styled.div`
   display: flex;
@@ -112,17 +111,23 @@ function BookingRow({ booking }: BookingRowProps) {
 
       <StatusPriceContainer>
         <Cabin>{cabinName}</Cabin>
-
         <Stacked>
-          <span className="px-3 sm:px-0">{guestName}</span>
-          <Tooltip>
-            <TooltipTrigger className="text-ellipsis overflow-hidden text-nowrap w-[80%] sm:w-[100%] mx-auto">{email}</TooltipTrigger>
-            <TooltipContent>
-              <p className='text-xl'>{email}</p>
-            </TooltipContent>
-          </Tooltip>
+          <span className="px-3 sm:px-0 w-[94%] mx-auto sm:w-[100%]">{guestName}</span>
+
+          <Popover>
+            <PopoverTrigger className="text-ellipsis overflow-hidden text-nowrap w-[60%] sm:w-[100%] mx-auto">
+              {email}
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverHeader>
+                <PopoverDescription className='text-xl text-center text-black text-grey-500'>{email}</PopoverDescription>
+              </PopoverHeader>
+            </PopoverContent>
+          </Popover>
+
         </Stacked>
       </StatusPriceContainer>
+
 
       <Stacked>
         <span>

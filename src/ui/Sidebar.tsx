@@ -1,15 +1,6 @@
 import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
-import Uploader from "../data/Uploader";
-import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-} from "@/ui/shadcn/drawer"
-import { Button } from "@/ui/shadcn/ShadcnButton";
 
 
 const StyledSidebar = styled.aside`
@@ -25,11 +16,11 @@ const StyledSidebar = styled.aside`
 
 export function Sidebar() {
   return (
-    
+
     <StyledSidebar>
       <Logo />
       <MainNav />
-    
+
       {/*<Uploader />  Uploader is temporary function for development */}
     </StyledSidebar>
   );

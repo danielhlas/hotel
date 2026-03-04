@@ -28,7 +28,7 @@ function BookingTable() {
   const width = useWindowSize();
   const tableColumns = width >= 768
     ? "0.6fr 2fr 2.4fr 1.4fr 1fr" //5cols for big screen
-    : "minmax(0,1.5fr) minmax(0,2.5fr) minmax(0,1.5fr)";    //3cols for small screen
+    : "minmax(0,1.4fr) minmax(0,2.4fr) minmax(0,1.4fr)";    //3cols for small screen
 
 
   //QUERY
@@ -59,9 +59,6 @@ function BookingTable() {
       queryFn: () => getBookings({ filterValue, splittedSortValue, currentPage: currentPage - 1 }),
     })
   }
-
-
-
 
   if (isLoading) return <Spinner />
 
