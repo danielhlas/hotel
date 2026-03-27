@@ -8,7 +8,7 @@ import { getBookingsAfterDate, getStaysAfterDate } from "../services/apiBookings
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { uploadBookings } from "../data/Uploader";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import HeaderOfPage from "@/ui/HeaderOfPage";
 
 function Dashboard() {
@@ -27,19 +27,23 @@ function Dashboard() {
     queryFn: () => getStaysAfterDate(queryDate)
   })
 
-
-
   //if not enough data, upload new bookings to database and refetch:
+
+  const hasTriggeredUpload = useRef(false);
+
   useEffect(function () {
     if (isLoadingStayes || !staysAfterDate) return;
+    if (hasTriggeredUpload.current) return;
+
     if (staysAfterDate?.length < 2) {
+      hasTriggeredUpload.current = true;
       uploadBookings().then(() => {
         queryClient.invalidateQueries({ queryKey: ["StaysAfterDate", daysSelectedNumber], refetchType: 'active' })
         queryClient.invalidateQueries({ queryKey: ["BookingsAfterDate", daysSelectedNumber], refetchType: 'active' })
+        queryClient.invalidateQueries({ queryKey: ["TodayActivity"], refetchType: 'active' })
       })
     }
-  }, [isLoadingStayes, staysAfterDate, daysSelectedNumber])
-
+  }, [isLoadingStayes, staysAfterDate, daysSelectedNumber, queryClient])
 
   const { isLoading: isLoadingBookings, data: bookingsAfterDate, error: errorBookings } = useQuery({
     queryKey: ["BookingsAfterDate", daysSelectedNumber],
